@@ -26,7 +26,7 @@
             ads:layout_constraintStart_toStartOf="parent"
             ads:layout_constraintTop_toTopOf="parent"
             ads:layout_constraintVertical_bias="0.0"
-            ads:srcCompat="@drawable/menu" />
+            ads:srcCompat="@drawable/menu_icon" />
 
         <EditText
             android:id="@+id/editText"
@@ -36,8 +36,8 @@
             android:layout_marginStart="80dp"
             android:layout_marginTop="28dp"
             android:layout_marginEnd="31dp"
-            android:background="@drawable/editstyle"
-            android:drawableEnd="@drawable/search"
+            android:background="@drawable/et_style"
+            android:drawableEnd="@drawable/search_icon"
             android:ems="10"
             android:fontFamily="@font/myfont"
             android:hint="@string/find"
@@ -123,9 +123,9 @@
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="35dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="30dp"
             ads:layout_constraintBottom_toBottomOf="parent"
             ads:layout_constraintEnd_toEndOf="parent"
