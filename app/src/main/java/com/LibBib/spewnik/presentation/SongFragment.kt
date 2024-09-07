@@ -1,10 +1,10 @@
 package com.LibBib.spewnik.presentation
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.LibBib.spewnik.databinding.FragmentSongBinding
 
@@ -22,15 +22,21 @@ class SongFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         _binding = FragmentSongBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupTextViews()
 
-        Toast.makeText(context, args.songArg.text, Toast.LENGTH_LONG).show()
+    }
+
+    private fun setupTextViews() {
+        val song = args.songArg
+        binding.songNameTv.text = song.name
+        binding.songTextTv.movementMethod = ScrollingMovementMethod()
+        binding.songTextTv.text = song.text
     }
 
     override fun onDestroyView() {
