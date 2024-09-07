@@ -2,8 +2,6 @@ package com.LibBib.spewnik.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.commit
-import com.LibBib.spewnik.R
 import com.LibBib.spewnik.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -12,13 +10,9 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        supportFragmentManager.commit {
-            add(R.id.fragmentContainerView, SongListFragment())
-        }
     }
 
 }

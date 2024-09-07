@@ -10,6 +10,8 @@ import javax.inject.Inject
 
 class SongListAdapter @Inject constructor() : ListAdapter<Song, SongListAdapter.SongViewHolder>(SongDiffCallback()) {
 
+    var onSongItemClickListener: ((Song) -> Unit)? = null
+
     class SongViewHolder(val binding: SongItemBinding) : RecyclerView.ViewHolder(binding.root) {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
@@ -22,5 +24,8 @@ class SongListAdapter @Inject constructor() : ListAdapter<Song, SongListAdapter.
         val song = getItem(position)
         holder.binding.tvName.text = song.name
         holder.binding.tvTypes.text = song.typesString
+        holder.binding.root.setOnClickListener {
+            onSongItemClickListener?.invoke(song)
+        }
     }
 }

@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.LibBib.spewnik.R
 import com.LibBib.spewnik.databinding.FragmentSongListBinding
 import com.LibBib.spewnik.di.ViewModelFactory
 import kotlinx.coroutines.launch
@@ -53,13 +56,14 @@ class SongListFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.songList.collect {
                 adapter.submitList(it)
-
             }
         }
-
     }
 
     private fun setupRecyclerView() {
+        adapter.onSongItemClickListener = {
+            findNavController().navigate(SongListFragmentDirections.actionSongListFragmentToSongFragment(it))
+        }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
     }

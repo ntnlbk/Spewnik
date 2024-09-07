@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
+    id("kotlin-parcelize")
+    id ("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -21,6 +23,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -52,6 +55,12 @@ dependencies {
     //fragments
     implementation(libs.fragment.ktx)
     implementation(libs.androidx.fragment.compose)
+
+    //fragments navigation
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui)
+    implementation(libs.androidx.navigation.dynamic.features.fragment)
+    api(libs.androidx.navigation.fragment.ktx)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
