@@ -47,6 +47,11 @@ dependencies {
     //room
     implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
+    //fragments
+    implementation(libs.fragment.ktx)
+    implementation(libs.androidx.fragment.compose)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

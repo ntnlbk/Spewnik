@@ -3,6 +3,7 @@ package com.example.spewnik.data
 import com.example.spewnik.domain.Song
 import com.example.spewnik.domain.SongListRepository
 import com.example.spewnik.domain.SongType
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class SongListRepositoryImpl @Inject constructor(
@@ -11,7 +12,7 @@ class SongListRepositoryImpl @Inject constructor(
 ) : SongListRepository {
 
 
-    override fun getSongList(): List<Song> {
+    override fun getSongList(): Flow<List<Song>> {
         return mapper.mapListDbModelToListEntity(songListDao.getSongList())
     }
 

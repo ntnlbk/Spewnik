@@ -2,11 +2,13 @@ package com.example.spewnik.data
 
 import com.example.spewnik.domain.Song
 import com.example.spewnik.domain.SongType
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class SongMapper @Inject constructor() {
 
-    private fun mapDbModelToEntity(dbModel: SongDbModel): Song{
+    private fun mapDbModelToEntity(dbModel: SongDbModel): Song {
 
         return Song(
             dbModel.name,
@@ -17,9 +19,7 @@ class SongMapper @Inject constructor() {
         )
     }
 
-    fun mapListDbModelToListEntity(list: List<SongDbModel>): List<Song>{
-        return list.map {
-            mapDbModelToEntity(it)
-        }
+    fun mapListDbModelToListEntity(list: Flow<List<SongDbModel>>): Flow<List<Song>> {
+        return list.map { it.map { dbModel -> mapDbModelToEntity(dbModel) } }
     }
 }
