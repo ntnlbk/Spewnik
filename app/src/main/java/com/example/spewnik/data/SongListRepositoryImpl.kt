@@ -12,7 +12,7 @@ class SongListRepositoryImpl @Inject constructor(
 ) : SongListRepository {
 
 
-    override fun getSongList(): Flow<List<Song>> {
+    override fun getSongList(songType: SongType): Flow<List<Song>> {
         return mapper.mapListDbModelToListEntity(songListDao.getSongList())
     }
 
@@ -20,8 +20,5 @@ class SongListRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun getSortedSongList(songType: SongType): List<Song> {
-        TODO("Not yet implemented")
-    }
 
 }
