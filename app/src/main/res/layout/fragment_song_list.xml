@@ -133,5 +133,5 @@
             ads:layout_constraintStart_toStartOf="parent"
             ads:layout_constraintTop_toBottomOf="@+id/types"
             ads:layout_constraintVertical_bias="1.0"
-            tools:listitem="@layout/text_row_item" />
+            tools:listitem="@layout/song_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>

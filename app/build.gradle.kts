@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.spewnik"
+    namespace = "com.LibBib.spewnik"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.spewnik"
+        applicationId = "com.LibBib.spewnik"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
