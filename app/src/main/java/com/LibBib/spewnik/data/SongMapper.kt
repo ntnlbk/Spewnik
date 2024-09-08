@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class SongMapper @Inject constructor() {
 
-    private fun mapDbModelToEntity(dbModel: SongDbModel): Song {
+     fun mapDbModelToEntity(dbModel: SongDbModel): Song {
 
         return Song(
             dbModel.name,

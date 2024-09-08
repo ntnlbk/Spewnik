@@ -4,6 +4,7 @@ import com.LibBib.spewnik.domain.Song
 import com.LibBib.spewnik.domain.SongListRepository
 import com.LibBib.spewnik.domain.SongType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class SongListRepositoryImpl @Inject constructor(
@@ -16,8 +17,10 @@ class SongListRepositoryImpl @Inject constructor(
         return mapper.mapListDbModelToListEntity(songListDao.getSongList())
     }
 
-    override fun getSong(id: Int): Song {
-        TODO("Not yet implemented")
+    override fun getSong(id: Int): Flow<Song> {
+        return songListDao.getSong(id).map { dbModel ->
+            mapper.mapDbModelToEntity(dbModel)
+        }
     }
 
 

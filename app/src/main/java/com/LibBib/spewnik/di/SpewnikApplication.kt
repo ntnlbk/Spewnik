@@ -1,8 +1,7 @@
-package com.LibBib.spewnik.presentation
+package com.LibBib.spewnik.di
 
 import android.app.Application
 import com.LibBib.spewnik.data.SongRoomDatabase
-import com.LibBib.spewnik.di.DaggerApplicationComponent
 
 class SpewnikApplication: Application() {
     val database by lazy { SongRoomDatabase.getDatabase(this) }

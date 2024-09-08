@@ -1,10 +1,10 @@
 package com.LibBib.spewnik.presentation
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -12,10 +12,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.LibBib.spewnik.R
 import com.LibBib.spewnik.databinding.FragmentSongListBinding
+import com.LibBib.spewnik.di.SpewnikApplication
 import com.LibBib.spewnik.di.ViewModelFactory
+import com.LibBib.spewnik.domain.Song
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
+private const val s = "song_fragment_backstack"
 
 class SongListFragment : Fragment() {
 
@@ -25,11 +29,11 @@ class SongListFragment : Fragment() {
     @Inject
     lateinit var adapter: SongListAdapter
 
-    private val viewModel by lazy{
+    private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[SongListViewModel::class.java]
     }
 
-    private val component by lazy{
+    private val component by lazy {
         (requireActivity().application as SpewnikApplication).component
     }
 
@@ -62,14 +66,43 @@ class SongListFragment : Fragment() {
 
     private fun setupRecyclerView() {
         adapter.onSongItemClickListener = {
-            findNavController().navigate(SongListFragmentDirections.actionSongListFragmentToSongFragment(it))
+            launchSongFragment(it)
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
     }
 
+    private fun launchSongFragment(it: Song) {
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            launchInPortraitMode(it)
+        } else {
+            launchWithLandscapeMode(it)
+        }
+    }
+
+    private fun launchWithLandscapeMode(it: Song) {
+        val fragment = SongFragment.newInstance(it)
+        requireActivity().supportFragmentManager.popBackStack()
+        requireActivity().supportFragmentManager.beginTransaction()
+            .add(R.id.fragmentContainerViewSongText, fragment)
+            .addToBackStack(SONG_FRAGMENT_BACK_STACK_NAME)
+            .commit()
+    }
+
+    private fun launchInPortraitMode(it: Song) {
+        findNavController().navigate(
+            SongListFragmentDirections.actionSongListFragmentToSongFragment(
+                it
+            )
+        )
+    }
+
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    companion object{
+        const val SONG_FRAGMENT_BACK_STACK_NAME = "song_fragment_backstack"
     }
 }

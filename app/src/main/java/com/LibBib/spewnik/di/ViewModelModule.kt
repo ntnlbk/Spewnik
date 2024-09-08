@@ -2,6 +2,7 @@ package com.LibBib.spewnik.di
 
 import androidx.lifecycle.ViewModel
 import com.LibBib.spewnik.presentation.SongListViewModel
+import com.LibBib.spewnik.presentation.SongViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -12,4 +13,5 @@ interface ViewModelModule {
     @ViewModelKey(SongListViewModel::class)
     @Binds
     fun bindSongListViewModel(impl: SongListViewModel): ViewModel
+
 }

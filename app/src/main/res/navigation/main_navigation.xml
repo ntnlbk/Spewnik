@@ -20,6 +20,8 @@
         tools:layout="@layout/fragment_song" >
         <argument
             android:name="songArg"
-            app:argType="com.LibBib.spewnik.domain.Song" />
+            app:argType="com.LibBib.spewnik.domain.Song"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 </navigation>
