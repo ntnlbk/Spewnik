@@ -1,4 +1,4 @@
-package com.LibBib.spewnik.presentation
+package com.LibBib.spewnik.presentation.SongListFragment
 
 import androidx.recyclerview.widget.DiffUtil
 import com.LibBib.spewnik.domain.Song

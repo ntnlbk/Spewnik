@@ -1,4 +1,4 @@
-package com.LibBib.spewnik.presentation
+package com.LibBib.spewnik.presentation.SongFragment
 
 import android.graphics.Color
 import android.text.Spannable

@@ -1,8 +1,8 @@
 package com.LibBib.spewnik.di
 
 import android.app.Application
-import com.LibBib.spewnik.presentation.SongFragment
-import com.LibBib.spewnik.presentation.SongListFragment
+import com.LibBib.spewnik.presentation.SongFragment.SongFragment
+import com.LibBib.spewnik.presentation.SongListFragment.SongListFragment
 import dagger.BindsInstance
 import dagger.Component
 

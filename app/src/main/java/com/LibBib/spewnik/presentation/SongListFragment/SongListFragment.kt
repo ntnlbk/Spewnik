@@ -1,4 +1,4 @@
-package com.LibBib.spewnik.presentation
+package com.LibBib.spewnik.presentation.SongListFragment
 
 import android.content.res.Configuration
 import android.os.Bundle
@@ -15,6 +15,7 @@ import com.LibBib.spewnik.databinding.FragmentSongListBinding
 import com.LibBib.spewnik.di.SpewnikApplication
 import com.LibBib.spewnik.di.ViewModelFactory
 import com.LibBib.spewnik.domain.Song
+import com.LibBib.spewnik.presentation.SongFragment.SongFragment
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

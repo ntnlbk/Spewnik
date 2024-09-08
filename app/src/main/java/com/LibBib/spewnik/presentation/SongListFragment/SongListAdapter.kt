@@ -1,4 +1,4 @@
-package com.LibBib.spewnik.presentation
+package com.LibBib.spewnik.presentation.SongListFragment
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,9 @@ import com.LibBib.spewnik.databinding.SongItemBinding
 import com.LibBib.spewnik.domain.Song
 import javax.inject.Inject
 
-class SongListAdapter @Inject constructor() : ListAdapter<Song, SongListAdapter.SongViewHolder>(SongDiffCallback()) {
+class SongListAdapter @Inject constructor() : ListAdapter<Song, SongListAdapter.SongViewHolder>(
+    SongDiffCallback()
+) {
 
     var onSongItemClickListener: ((Song) -> Unit)? = null
 

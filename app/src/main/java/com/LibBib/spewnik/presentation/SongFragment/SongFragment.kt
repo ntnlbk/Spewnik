@@ -1,6 +1,5 @@
-package com.LibBib.spewnik.presentation
+package com.LibBib.spewnik.presentation.SongFragment
 
-import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
