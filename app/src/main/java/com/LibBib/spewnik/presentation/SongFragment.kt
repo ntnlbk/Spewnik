@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.LibBib.spewnik.databinding.FragmentSongBinding
 import com.LibBib.spewnik.di.SpewnikApplication
-import com.LibBib.spewnik.domain.Song
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,7 +24,7 @@ class SongFragment : Fragment() {
     private val viewModel by lazy {
         ViewModelProvider(
             this,
-            SongViewModel.factory(viewModelFactory, song!!.id)
+            SongViewModel.factory(viewModelFactory, songId!!)
         )[SongViewModel::class.java]
     }
     private val component by lazy {
@@ -38,7 +37,7 @@ class SongFragment : Fragment() {
     private val binding: FragmentSongBinding
         get() = _binding ?: throw Exception("SongFragmentBinding is null")
 
-    private var song: Song? = null
+    private var songId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +53,11 @@ class SongFragment : Fragment() {
         parseArgs()
         setupTextViews()
         observeViewModel()
+
+        binding.backBtn.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
     }
 
     private fun observeViewModel(){
@@ -63,9 +67,10 @@ class SongFragment : Fragment() {
                     is SongFragmentState.Content -> {
                         binding.songNameTv.text = it.name
                         binding.songTextTv.text = it.text
+                        binding.songProgressBar.visibility = View.INVISIBLE
                     }
                     is SongFragmentState.Progress -> {
-
+                        binding.songProgressBar.visibility = View.VISIBLE
                     }
                 }
             }
@@ -78,15 +83,9 @@ class SongFragment : Fragment() {
 
 
     private fun parseArgs() {
-        song = args.songArg
-        if (song == null) {
-            song = when {
-                SDK_INT >= 33 -> requireArguments().getParcelable(
-                    SONG_KEY_ARG,
-                    Song::class.java
-                )
-                else -> @Suppress("DEPRECATION") requireArguments().getParcelable(SONG_KEY_ARG)
-            }
+        songId = args.songId
+        if (songId == SONG_ID_DEFAULT_VALUE) {
+            songId = requireArguments().getInt(SONG_ID_KEY_ARG)
         }
     }
 
@@ -96,11 +95,12 @@ class SongFragment : Fragment() {
     }
 
     companion object {
-        private const val SONG_KEY_ARG = "song arg"
-        fun newInstance(song: Song): SongFragment {
+        private const val SONG_ID_DEFAULT_VALUE = -1
+        private const val SONG_ID_KEY_ARG = "song arg"
+        fun newInstance(songId: Int): SongFragment {
             return SongFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(SONG_KEY_ARG, song)
+                    putInt(SONG_ID_KEY_ARG, songId)
                 }
             }
         }

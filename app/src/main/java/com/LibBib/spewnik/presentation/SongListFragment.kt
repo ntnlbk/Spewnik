@@ -19,8 +19,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-private const val s = "song_fragment_backstack"
-
 class SongListFragment : Fragment() {
 
     @Inject
@@ -58,8 +56,16 @@ class SongListFragment : Fragment() {
 
     private fun observeViewModel() {
         lifecycleScope.launch {
-            viewModel.songList.collect {
-                adapter.submitList(it)
+            viewModel.state.collect {
+                when (it) {
+                    is SongListFragmentState.Content -> {
+                        adapter.submitList(it.songList)
+                        binding.listProgressBar.visibility = View.INVISIBLE
+                    }
+                    is SongListFragmentState.Progress -> {
+                        binding.listProgressBar.visibility = View.VISIBLE
+                    }
+                }
             }
         }
     }
@@ -81,7 +87,7 @@ class SongListFragment : Fragment() {
     }
 
     private fun launchWithLandscapeMode(it: Song) {
-        val fragment = SongFragment.newInstance(it)
+        val fragment = SongFragment.newInstance(it.id)
         requireActivity().supportFragmentManager.popBackStack()
         requireActivity().supportFragmentManager.beginTransaction()
             .add(R.id.fragmentContainerViewSongText, fragment)
@@ -92,7 +98,7 @@ class SongListFragment : Fragment() {
     private fun launchInPortraitMode(it: Song) {
         findNavController().navigate(
             SongListFragmentDirections.actionSongListFragmentToSongFragment(
-                it
+                it.id
             )
         )
     }
@@ -102,7 +108,7 @@ class SongListFragment : Fragment() {
         super.onDestroyView()
     }
 
-    companion object{
+    companion object {
         const val SONG_FRAGMENT_BACK_STACK_NAME = "song_fragment_backstack"
     }
 }
