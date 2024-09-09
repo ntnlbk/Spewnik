@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/C1">
 
 
     <androidx.fragment.app.FragmentContainerView
@@ -11,6 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
+        android:background="@color/C1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,6 +31,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerViewSongText"
+        android:background="@color/C1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

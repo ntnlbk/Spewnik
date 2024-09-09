@@ -2,6 +2,8 @@ package com.LibBib.spewnik.presentation.SongListFragment
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,6 +55,21 @@ class SongListFragment : Fragment() {
         component.inject(this)
         setupRecyclerView()
         observeViewModel()
+
+        binding.searchEt.addTextChangedListener(object :TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                viewModel.searchInList(binding.searchEt.text.toString())
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+        })
+
     }
 
     private fun observeViewModel() {

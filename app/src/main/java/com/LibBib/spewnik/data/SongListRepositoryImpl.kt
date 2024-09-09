@@ -14,7 +14,8 @@ class SongListRepositoryImpl @Inject constructor(
 
 
     override fun getSongList(songType: SongType): Flow<List<Song>> {
-        return mapper.mapListDbModelToListEntity(songListDao.getSongList())
+        return mapper.mapListDbModelToListEntity(
+            songListDao.getSongList().map { it.sortedBy { song -> song.name } })
     }
 
     override fun getSong(id: Int): Flow<Song> {

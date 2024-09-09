@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -36,13 +37,18 @@ class SongViewModel @AssistedInject constructor(
         val songName = song.name
         var songText = song.text
         songText = songText
-            .replace("<br/><br/>", System.lineSeparator())
+            .replace("<br/><br/>", "\n")
             .replace("<br/>", "")
             .replace("<![CDATA[", "")
             .replace("]]>", "")
             .replace("  ", "")
+            .replace("i", "і")
+            .replace("<br />", "")
+            .replace("I", "І")
+        var counter= 0
         val spannableSongText = SpannableString(songText)
-        var counter = 0
+        Log.d("SongViewModel", songText)
+        counter = 0
         for (i in spannableSongText) {
             if (i >= 65.toChar() && i <= 122.toChar() || i == 35.toChar() || i == 55.toChar()) {
                 spannableSongText.setSpan(
