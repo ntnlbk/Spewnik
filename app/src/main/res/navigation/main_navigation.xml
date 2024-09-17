@@ -10,6 +10,8 @@
         android:name="com.LibBib.spewnik.presentation.SongListFragment.SongListFragment"
         android:label="SongListFragment" >
         <action
+            app:restoreState="true"
+            app:popUpToSaveState="true"
             android:id="@+id/action_songListFragment_to_songFragment"
             app:destination="@id/songFragment" />
     </fragment>
