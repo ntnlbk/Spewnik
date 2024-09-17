@@ -15,7 +15,7 @@
 
         android:id="@+id/tv_name"
         android:layout_width="0dp"
-        android:layout_height="31dp"
+        android:layout_height="wrap_content"
         android:layout_marginRight="15dp"
         android:background="@drawable/song_name_tv"
         android:paddingStart="7dp"

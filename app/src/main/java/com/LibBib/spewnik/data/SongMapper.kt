@@ -1,12 +1,16 @@
 package com.LibBib.spewnik.data
 
+import android.app.Application
+import com.LibBib.spewnik.R
 import com.LibBib.spewnik.domain.Song
 import com.LibBib.spewnik.domain.SongType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class SongMapper @Inject constructor() {
+class SongMapper @Inject constructor(
+    private val context: Application,
+) {
 
     fun mapDbModelToEntity(dbModel: SongDbModel): Song {
 
@@ -25,21 +29,20 @@ class SongMapper @Inject constructor() {
     }
 
     private fun mapStringTypesToSetTypes(stringTypes: String): Set<SongType> {
+        val shortStringType = context.getString(R.string.short_songs).lowercase()
+        val longStringType = context.getString(R.string.long_songs).lowercase()
+        val partOfMassStringType = context.getString(R.string.parts).lowercase()
         val setTypes = mutableSetOf<SongType>()
         val stringTypesLowerCase = stringTypes.lowercase()
-        if (stringTypesLowerCase.contains(SHORT_TYPE_STRING))
+        setTypes.add(SongType.ALL)
+        if (stringTypesLowerCase.contains(shortStringType))
             setTypes.add(SongType.SHORT)
-        if (stringTypesLowerCase.contains(LONG_TYPE_STRING))
+        if (stringTypesLowerCase.contains(longStringType))
             setTypes.add(SongType.LONG)
-        if (stringTypesLowerCase.contains(PART_OF_MASS_TYPE_STRING))
+        if (stringTypesLowerCase.contains(partOfMassStringType))
             setTypes.add(SongType.PART_OF_MASS)
         return setTypes
     }
 
-    companion object {
-        private const val SHORT_TYPE_STRING = "кароткія"
-        private const val LONG_TYPE_STRING = "доўгія"
-        private const val PART_OF_MASS_TYPE_STRING = "часткі імшы"
-    }
 
 }

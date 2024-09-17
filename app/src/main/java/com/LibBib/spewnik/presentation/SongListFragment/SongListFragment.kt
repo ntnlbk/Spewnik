@@ -1,12 +1,15 @@
 package com.LibBib.spewnik.presentation.SongListFragment
 
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -42,6 +45,15 @@ class SongListFragment : Fragment() {
     private val binding: FragmentSongListBinding
         get() = _binding ?: throw Exception("FragmentSongListBinding is null")
 
+    private val typesBtn by lazy {
+        listOf(
+            binding.allBtn,
+            binding.partsOfMessBtn,
+            binding.longBtn,
+            binding.shortBtn
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,8 +67,12 @@ class SongListFragment : Fragment() {
         component.inject(this)
         setupRecyclerView()
         observeViewModel()
+        setOnTextChangedListener()
+        setOnClickListeners()
+    }
 
-        binding.searchEt.addTextChangedListener(object :TextWatcher{
+    private fun setOnTextChangedListener() {
+        binding.searchEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
@@ -69,7 +85,24 @@ class SongListFragment : Fragment() {
 
             }
         })
+    }
 
+    private fun setOnClickListeners() {
+        for (i in typesBtn) {
+            i.setOnClickListener {
+                sortSongListByType(i)
+            }
+        }
+    }
+
+    private fun sortSongListByType(i: TextView) {
+        viewModel.sortSongListByType(i.text.toString())
+        i.setTextColor(ContextCompat.getColor(requireActivity(), R.color.C2))
+        for (notClickedTv in typesBtn) {
+            if (notClickedTv != i) {
+                notClickedTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.C4))
+            }
+        }
     }
 
     private fun observeViewModel() {
@@ -80,6 +113,7 @@ class SongListFragment : Fragment() {
                         adapter.submitList(it.songList)
                         binding.listProgressBar.visibility = View.INVISIBLE
                     }
+
                     is SongListFragmentState.Progress -> {
                         binding.listProgressBar.visibility = View.VISIBLE
                     }
