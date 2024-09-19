@@ -36,19 +36,8 @@ class SongViewModel @AssistedInject constructor(
     private fun parseSong(song: Song){
         val songName = song.name
         var songText = song.text
-        songText = songText
-            .replace("<br/><br/>", "\n")
-            .replace("<br/>", "")
-            .replace("<![CDATA[", "")
-            .replace("]]>", "")
-            .replace("  ", "")
-            .replace("i", "і")
-            .replace("<br />", "")
-            .replace("I", "І")
-        var counter= 0
         val spannableSongText = SpannableString(songText)
-        Log.d("SongViewModel", songText)
-        counter = 0
+        var counter = 0
         for (i in spannableSongText) {
             if (i >= 65.toChar() && i <= 122.toChar() || i == 35.toChar() || i == 55.toChar()) {
                 spannableSongText.setSpan(

@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.LibBib.spewnik.R
 import com.LibBib.spewnik.databinding.FragmentSongBinding
 import com.LibBib.spewnik.di.SpewnikApplication
+import com.LibBib.spewnik.presentation.OptionsFragment.OptionsFragment
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,6 +35,8 @@ class SongFragment : Fragment() {
 
     private val args by navArgs<SongFragmentArgs>()
 
+    private var MODE = UNKNOWN_MODE
+
     private var _binding: FragmentSongBinding? = null
     private val binding: FragmentSongBinding
         get() = _binding ?: throw Exception("SongFragmentBinding is null")
@@ -40,7 +45,7 @@ class SongFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentSongBinding.inflate(layoutInflater)
         return binding.root
@@ -57,17 +62,48 @@ class SongFragment : Fragment() {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
+        binding.optionsBtn.setOnClickListener {
+            when (MODE) {
+                PORTRAIT_MODE -> {
+                    launchOptionsFragmentInPortraitMode()
+                }
+
+                LANDSCAPE_MODE -> {
+                    launchOptionsFragmentInLandscapeMode()
+                }
+
+                else -> {
+                    throw Exception("unknown mode")
+                }
+            }
+        }
+
     }
 
-    private fun observeViewModel(){
+    private fun launchOptionsFragmentInPortraitMode() {
+        findNavController().navigate(
+            SongFragmentDirections.actionSongFragmentToOptionsFragment()
+        )
+    }
+
+    private fun launchOptionsFragmentInLandscapeMode() {
+        val fragment = OptionsFragment.newInstance()
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainerViewSongText, fragment)
+            .addToBackStack("")
+            .commit()
+    }
+
+    private fun observeViewModel() {
         lifecycleScope.launch {
             viewModel.state.collect {
-                when(it){
+                when (it) {
                     is SongFragmentState.Content -> {
                         binding.songNameTv.text = it.name
                         binding.songTextTv.text = it.text
                         binding.songProgressBar.visibility = View.INVISIBLE
                     }
+
                     is SongFragmentState.Progress -> {
                         binding.songProgressBar.visibility = View.VISIBLE
                     }
@@ -83,7 +119,9 @@ class SongFragment : Fragment() {
 
     private fun parseArgs() {
         songId = args.songId
+        MODE = PORTRAIT_MODE
         if (songId == SONG_ID_DEFAULT_VALUE) {
+            MODE = LANDSCAPE_MODE
             songId = requireArguments().getInt(SONG_ID_KEY_ARG)
         }
     }
@@ -103,5 +141,9 @@ class SongFragment : Fragment() {
                 }
             }
         }
+
+        private const val LANDSCAPE_MODE = 100
+        private const val PORTRAIT_MODE = 111
+        private const val UNKNOWN_MODE = 0
     }
 }

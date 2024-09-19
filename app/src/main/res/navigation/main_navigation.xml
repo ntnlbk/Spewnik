@@ -24,5 +24,13 @@
             android:name="songId"
             app:argType="integer"
             android:defaultValue="-1" />
+        <action
+            android:id="@+id/action_songFragment_to_optionsFragment"
+            app:destination="@id/optionsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/optionsFragment"
+        android:name="com.LibBib.spewnik.presentation.OptionsFragment.OptionsFragment"
+        android:label="fragment_options"
+        tools:layout="@layout/fragment_options" />
 </navigation>
