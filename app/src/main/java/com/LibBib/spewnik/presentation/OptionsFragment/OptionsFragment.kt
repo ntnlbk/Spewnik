@@ -1,6 +1,8 @@
 package com.LibBib.spewnik.presentation.OptionsFragment
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,26 +12,32 @@ import androidx.lifecycle.lifecycleScope
 import com.LibBib.spewnik.databinding.FragmentOptionsBinding
 import com.LibBib.spewnik.di.SpewnikApplication
 import com.LibBib.spewnik.di.ViewModelFactory
+import com.LibBib.spewnik.domain.options.Options
+import com.skydoves.colorpickerview.ColorPickerDialog
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
+private const val colorPickerStateName = "MyColorPickerDialog"
+
 class OptionsFragment : Fragment() {
 
-    private val component by lazy{
+    private val component by lazy {
         (requireActivity().application as SpewnikApplication).component
     }
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private val viewModel by lazy{
+    private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[OptionsViewModel::class.java]
     }
 
     private var _binding: FragmentOptionsBinding? = null
     private val binding: FragmentOptionsBinding
         get() = _binding ?: throw Exception("FragmentOptionsBinding is null")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,21 +56,28 @@ class OptionsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupOnClickListeners()
         observeViewModel()
+
+
     }
 
     private fun observeViewModel() {
         lifecycleScope.launch {
             viewModel.state.collect {
-                when(it){
+                when (it) {
+                    is OptionsFragmentState.Progress -> {
+                        binding.optionsProgressBar.visibility = View.VISIBLE
+                    }
+
                     is OptionsFragmentState.Content -> {
-                        updateViewsWithContent(it)
+                        updateViewsWithContent(it.options)
+                        binding.optionsProgressBar.visibility = View.INVISIBLE
                     }
                 }
             }
         }
     }
 
-    private fun updateViewsWithContent(it: OptionsFragmentState.Content) {
+    private fun updateViewsWithContent(it: Options) {
         binding.chordsCb.isChecked = it.isChordsVisible
         binding.transposeNumberTv.text = it.transposeInt.toString()
         binding.textSizeNumberTv.text = it.textSize.toString()
@@ -70,17 +85,56 @@ class OptionsFragment : Fragment() {
     }
 
     private fun setupOnClickListeners() {
+
         binding.backBtnOptionsFragment.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
+            backPressed()
         }
-
-        binding.darkModeIv.setOnClickListener{
-            //binding.darkModeCb.isChecked = !binding.darkModeCb.isChecked
-        }
-
         binding.showChordsIv.setOnClickListener {
-            //binding.chordsCb.isChecked = !binding.chordsCb.isChecked
+            viewModel.onShowChordsListener()
         }
+        binding.chordsCb.setOnClickListener {
+            viewModel.onShowChordsListener()
+        }
+        binding.transposePlusIb.setOnClickListener {
+            viewModel.onTransposePlusListener()
+        }
+        binding.transposeMinusIb.setOnClickListener {
+            viewModel.onTransposeMinusListener()
+        }
+
+        binding.changeColorIv.setOnClickListener {
+            ColorPickerDialog.Builder(requireActivity())
+                .setPreferenceName(colorPickerStateName)
+                .setPositiveButton(getString(com.LibBib.spewnik.R.string.confirm),
+                    ColorEnvelopeListener { envelope, _ -> viewModel.setColor(envelope.color) })
+                .setNegativeButton(
+                    getString(com.LibBib.spewnik.R.string.cancel)
+                ) { dialogInterface, _ -> dialogInterface.dismiss() }
+                .attachAlphaSlideBar(true)
+                .attachBrightnessSlideBar(true)
+                .setBottomSpace(12)
+                .show()
+        }
+        binding.textSizePlusIb.setOnClickListener {
+            viewModel.onTextSizePlusListener()
+        }
+        binding.textSizeMinusIb.setOnClickListener {
+            viewModel.onTextSizeMinusListener()
+        }
+        binding.darkModeIv.setOnClickListener {
+            viewModel.onDarkModeListener()
+        }
+        binding.darkModeCb.setOnClickListener {
+            viewModel.onDarkModeListener()
+        }
+        binding.accept.setOnClickListener {
+            viewModel.saveOptions()
+            //backPressed()
+        }
+    }
+
+    private fun backPressed() {
+        requireActivity().supportFragmentManager.popBackStack()
     }
 
     override fun onDestroyView() {

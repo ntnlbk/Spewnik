@@ -1,11 +1,10 @@
 package com.LibBib.spewnik.presentation.OptionsFragment
 
+import com.LibBib.spewnik.domain.options.Options
+
 sealed class OptionsFragmentState {
+    data object Progress : OptionsFragmentState()
     class Content(
-        val isChordsVisible: Boolean = true,
-        val transposeInt: Int = 0,
-        val chordsColor: Int = 0,
-        val textSize: Int = 0,
-        val isDarkMode: Boolean = false,
+        val options: Options,
     ) : OptionsFragmentState()
 }

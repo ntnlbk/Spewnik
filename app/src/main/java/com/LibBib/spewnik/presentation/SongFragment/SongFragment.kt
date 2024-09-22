@@ -131,6 +131,11 @@ class SongFragment : Fragment() {
         super.onDestroyView()
     }
 
+    override fun onResume() {
+        viewModel.updateScreen()
+        super.onResume()
+    }
+
     companion object {
         private const val SONG_ID_DEFAULT_VALUE = -1
         private const val SONG_ID_KEY_ARG = "song arg"

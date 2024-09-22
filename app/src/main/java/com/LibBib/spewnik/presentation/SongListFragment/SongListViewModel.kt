@@ -36,12 +36,14 @@ class SongListViewModel @Inject constructor(
     }
 
     private fun sortAndSearchInList() {
-        val sortedList = actualList.filter { song ->
-            song.name.lowercase().contains(stringToSearch.lowercase())
-        }.filter { song ->
-            song.types.contains(typeToSort)
+        if (this::actualList.isInitialized){
+            val sortedList = actualList.filter { song ->
+                song.name.lowercase().contains(stringToSearch.lowercase())
+            }.filter { song ->
+                song.types.contains(typeToSort)
+            }
+            _state.value = SongListFragmentState.Content(sortedList, typeToSort)
         }
-        _state.value = SongListFragmentState.Content(sortedList, typeToSort)
     }
 
     fun searchInList(chars: String) {

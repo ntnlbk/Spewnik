@@ -1,5 +1,7 @@
 package com.LibBib.spewnik.domain.options
 
 interface OptionsRepository {
-    fun getOptions(): Options
+    suspend fun getOptions(): Options
+
+    suspend fun saveOptions(options: Options)
 }

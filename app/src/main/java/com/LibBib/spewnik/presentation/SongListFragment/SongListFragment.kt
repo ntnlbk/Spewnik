@@ -68,8 +68,8 @@ class SongListFragment : Fragment() {
         component.inject(this)
         setupRecyclerView()
         observeViewModel()
-        setOnTextChangedListener()
         setOnClickListeners()
+        setOnTextChangedListener()
     }
 
     private fun setOnTextChangedListener() {

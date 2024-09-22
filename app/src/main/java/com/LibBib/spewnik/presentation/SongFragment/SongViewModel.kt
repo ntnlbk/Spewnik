@@ -1,39 +1,44 @@
 package com.LibBib.spewnik.presentation.SongFragment
 
-import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.LibBib.spewnik.domain.GetSongUseCase
 import com.LibBib.spewnik.domain.Song
+import com.LibBib.spewnik.domain.options.GetOptionsUseCase
+import com.LibBib.spewnik.domain.options.Options
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class SongViewModel @AssistedInject constructor(
     @Assisted private val songId: Int,
-    private val getSongUseCase: GetSongUseCase
+    private val getSongUseCase: GetSongUseCase,
+    private val getOptionsUseCase: GetOptionsUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<SongFragmentState>(SongFragmentState.Progress)
     val state = _state.asStateFlow()
 
-    init {
+    private lateinit var options: Options
+    private lateinit var song: Song
+
+    fun updateScreen() {
         viewModelScope.launch {
-            getSongUseCase(songId).collect {
-                parseSong(it)
-            }
+            song = getSongUseCase.invoke(songId).first()
+            options = getOptionsUseCase()
+            parseSong(song)
         }
     }
 
-    private fun parseSong(song: Song){
+    private fun parseSong(song: Song) {
         val songName = song.name
         var songText = song.text
         val spannableSongText = SpannableString(songText)
@@ -41,7 +46,7 @@ class SongViewModel @AssistedInject constructor(
         for (i in spannableSongText) {
             if (i >= 65.toChar() && i <= 122.toChar() || i == 35.toChar() || i == 55.toChar()) {
                 spannableSongText.setSpan(
-                    ForegroundColorSpan(Color.RED),
+                    ForegroundColorSpan(options.chordsColor),
                     counter,
                     counter + 1,
                     Spannable.SPAN_EXCLUSIVE_INCLUSIVE
@@ -56,7 +61,7 @@ class SongViewModel @AssistedInject constructor(
         @Suppress("UNCHECKED_CAST")
         fun factory(
             factory: Factory,
-            songId: Int
+            songId: Int,
         ): ViewModelProvider.Factory {
             return object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T =
