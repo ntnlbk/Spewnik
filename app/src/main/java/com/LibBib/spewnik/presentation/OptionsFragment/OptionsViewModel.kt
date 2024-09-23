@@ -31,22 +31,27 @@ class OptionsViewModel @Inject constructor(
         _state.value = OptionsFragmentState.Content(actualState)
     }
 
-    fun saveOptions() {
+    suspend fun saveOptions() {
         _state.value = OptionsFragmentState.Progress
-        viewModelScope.launch {
+        val saveOptionsJob = viewModelScope.launch {
             saveOptionsUseCase(actualState)
             _state.value = OptionsFragmentState.Content(actualState)
         }
+        saveOptionsJob.join()
     }
 
     fun onTransposePlusListener() {
-        actualState.transposeInt += 1
-        updateState()
+        if (actualState.transposeInt + 1 <= MAX_TRANSPOSE_NUMBER) {
+            actualState.transposeInt += 1
+            updateState()
+        }
     }
 
     fun onTransposeMinusListener() {
-        actualState.transposeInt -= 1
-        updateState()
+        if (actualState.transposeInt - 1 >= MIN_TRANSPOSE_NUMBER) {
+            actualState.transposeInt -= 1
+            updateState()
+        }
     }
 
     fun onTextSizePlusListener() {
@@ -68,8 +73,14 @@ class OptionsViewModel @Inject constructor(
         actualState.isDarkMode = !actualState.isDarkMode
         updateState()
     }
-    fun setColor(color: Int){
+
+    fun setColor(color: Int) {
         actualState.chordsColor = color
         updateState()
     }
+    companion object{
+        private const val MAX_TRANSPOSE_NUMBER = 12
+        private const val MIN_TRANSPOSE_NUMBER = -12
+    }
+
 }

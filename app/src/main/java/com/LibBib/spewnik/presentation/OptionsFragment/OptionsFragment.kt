@@ -1,8 +1,6 @@
 package com.LibBib.spewnik.presentation.OptionsFragment
 
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -128,8 +126,10 @@ class OptionsFragment : Fragment() {
             viewModel.onDarkModeListener()
         }
         binding.accept.setOnClickListener {
-            viewModel.saveOptions()
-            //backPressed()
+            lifecycleScope.launch {
+                viewModel.saveOptions()
+                backPressed()
+            }
         }
     }
 
