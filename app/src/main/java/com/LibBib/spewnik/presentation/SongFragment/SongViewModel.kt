@@ -41,20 +41,28 @@ class SongViewModel @AssistedInject constructor(
     private fun parseSong(song: Song) {
         val songName = song.name
         var songText = song.text
-        val spannableSongText = SpannableString(songText)
-        var counter = 0
-        for (i in spannableSongText) {
-            if (i >= 65.toChar() && i <= 122.toChar() || i == 35.toChar() || i == 55.toChar()) {
-                spannableSongText.setSpan(
-                    ForegroundColorSpan(options.chordsColor),
-                    counter,
-                    counter + 1,
-                    Spannable.SPAN_EXCLUSIVE_INCLUSIVE
-                )
+        if (options.isChordsVisible) {
+            val spannableSongText = SpannableString(songText)
+            var counter = 0
+            for (i in spannableSongText) {
+                if (i >= 65.toChar() && i <= 122.toChar() || i == 35.toChar() || i == 55.toChar()) {
+                    spannableSongText.setSpan(
+                        ForegroundColorSpan(options.chordsColor),
+                        counter,
+                        counter + 1,
+                        Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+                    )
+                }
+                counter++
             }
-            counter++
+            _state.value = SongFragmentState.Content(songName, spannableSongText)
+        } else {
+            songText = songText.filterNot {
+                it >= 65.toChar() && it <= 122.toChar() || it == 35.toChar() || it == 55.toChar()
+            }
+            val spannableSongText = SpannableString(songText)
+            _state.value = SongFragmentState.Content(songName, spannableSongText)
         }
-        _state.value = SongFragmentState.Content(songName, spannableSongText)
     }
 
     companion object {
