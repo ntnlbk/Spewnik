@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -156,7 +157,10 @@ class SongListFragment : Fragment() {
 
     private fun launchWithLandscapeMode(it: Song) {
         val fragment = SongFragment.newInstance(it.id)
-        requireActivity().supportFragmentManager.popBackStack()
+        requireActivity().supportFragmentManager.popBackStack(
+            "song_fragment_backstack",
+            FragmentManager.POP_BACK_STACK_INCLUSIVE
+        )
         requireActivity().supportFragmentManager.beginTransaction()
             .add(R.id.fragmentContainerViewSongText, fragment)
             .addToBackStack(SONG_FRAGMENT_BACK_STACK_NAME)
