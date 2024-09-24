@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.LibBib.spewnik.domain.GetSongUseCase
 import com.LibBib.spewnik.domain.Song
+import com.LibBib.spewnik.domain.TransposeSongUseCase
 import com.LibBib.spewnik.domain.options.GetOptionsUseCase
 import com.LibBib.spewnik.domain.options.Options
 import dagger.assisted.Assisted
@@ -22,6 +23,7 @@ class SongViewModel @AssistedInject constructor(
     @Assisted private val songId: Int,
     private val getSongUseCase: GetSongUseCase,
     private val getOptionsUseCase: GetOptionsUseCase,
+    private val transposeSongUseCase: TransposeSongUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<SongFragmentState>(SongFragmentState.Progress)
@@ -42,6 +44,8 @@ class SongViewModel @AssistedInject constructor(
         val songName = song.name
         var songText = song.text
         if (options.isChordsVisible) {
+            if(options.transposeInt != 0)
+                songText = transposeSongUseCase(songText, options.transposeInt)
             val spannableSongText = SpannableString(songText)
             var counter = 0
             for (i in spannableSongText) {
