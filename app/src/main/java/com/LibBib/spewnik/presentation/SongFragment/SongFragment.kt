@@ -2,6 +2,7 @@ package com.LibBib.spewnik.presentation.SongFragment
 
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -101,6 +102,10 @@ class SongFragment : Fragment() {
                     is SongFragmentState.Content -> {
                         binding.songNameTv.text = it.name
                         binding.songTextTv.text = it.text
+                        binding.songTextTv.setTextSize(
+                            TypedValue.COMPLEX_UNIT_SP,
+                            TEXT_VIEW_DEFAULT_TEXT_SIZE + it.textSizeFromOptions.toFloat()
+                        )
                         binding.songProgressBar.visibility = View.INVISIBLE
                     }
 
@@ -137,6 +142,7 @@ class SongFragment : Fragment() {
     }
 
     companion object {
+        private const val TEXT_VIEW_DEFAULT_TEXT_SIZE = 20
         private const val SONG_ID_DEFAULT_VALUE = -1
         private const val SONG_ID_KEY_ARG = "song arg"
         fun newInstance(songId: Int): SongFragment {

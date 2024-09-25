@@ -19,12 +19,7 @@ class TransposeSongUseCase @Inject constructor() {
                 majorChords7List.contains(threeActualChars) -> {
                     val charIndex = majorChords7List.indexOf(threeActualChars)
                     transposedString += majorChords7List[
-                        if (charIndex + transposeNumber > 11)
-                            charIndex + transposeNumber - 12
-                        else if (charIndex + transposeNumber < 0)
-                            charIndex + transposeNumber + 12
-                        else
-                            charIndex + transposeNumber
+                        calculateIndex(charIndex, transposeNumber)
                     ]
                     charNumber += 3
                 }
@@ -32,12 +27,7 @@ class TransposeSongUseCase @Inject constructor() {
                 minorChords7List.contains(threeActualChars) -> {
                     val charIndex = minorChords7List.indexOf(threeActualChars)
                     transposedString += minorChords7List[
-                        if (charIndex + transposeNumber > 11)
-                            charIndex + transposeNumber - 12
-                        else if (charIndex + transposeNumber < 0)
-                            charIndex + transposeNumber + 12
-                        else
-                            charIndex + transposeNumber
+                        calculateIndex(charIndex, transposeNumber)
                     ]
                     charNumber += 3
                 }
@@ -45,12 +35,7 @@ class TransposeSongUseCase @Inject constructor() {
                 majorChords7List.contains(twoActualChars) -> {
                     val charIndex = majorChords7List.indexOf(twoActualChars)
                     transposedString += majorChords7List[
-                        if (charIndex + transposeNumber > 11)
-                            charIndex + transposeNumber - 12
-                        else if (charIndex + transposeNumber < 0)
-                            charIndex + transposeNumber + 12
-                        else
-                            charIndex + transposeNumber
+                        calculateIndex(charIndex, transposeNumber)
                     ]
                     charNumber += 2
                 }
@@ -58,12 +43,7 @@ class TransposeSongUseCase @Inject constructor() {
                 minorChords7List.contains(twoActualChars) -> {
                     val charIndex = minorChords7List.indexOf(twoActualChars)
                     transposedString += minorChords7List[
-                        if (charIndex + transposeNumber > 11)
-                            charIndex + transposeNumber - 12
-                        else if (charIndex + transposeNumber < 0)
-                            charIndex + transposeNumber + 12
-                        else
-                            charIndex + transposeNumber
+                        calculateIndex(charIndex, transposeNumber)
                     ]
                     charNumber += 2
                 }
@@ -71,12 +51,7 @@ class TransposeSongUseCase @Inject constructor() {
                 majorChordsList.contains(twoActualChars) -> {
                     val charIndex = majorChordsList.indexOf(twoActualChars)
                     transposedString += majorChordsList[
-                        if (charIndex + transposeNumber > 11)
-                            charIndex + transposeNumber - 12
-                        else if (charIndex + transposeNumber < 0)
-                            charIndex + transposeNumber + 12
-                        else
-                            charIndex + transposeNumber
+                        calculateIndex(charIndex, transposeNumber)
                     ]
                     charNumber += 2
                 }
@@ -84,12 +59,7 @@ class TransposeSongUseCase @Inject constructor() {
                 minorChordsList.contains(twoActualChars) -> {
                     val charIndex = minorChordsList.indexOf(twoActualChars)
                     transposedString += minorChordsList[
-                        if (charIndex + transposeNumber > 11)
-                            charIndex + transposeNumber - 12
-                        else if (charIndex + transposeNumber < 0)
-                            charIndex + transposeNumber + 12
-                        else
-                            charIndex + transposeNumber
+                        calculateIndex(charIndex, transposeNumber)
                     ]
                     charNumber += 2
                 }
@@ -97,12 +67,7 @@ class TransposeSongUseCase @Inject constructor() {
                 majorChordsList.contains(actualChar) -> {
                     val charIndex = majorChordsList.indexOf(actualChar)
                     transposedString += majorChordsList[
-                        if (charIndex + transposeNumber > 11)
-                            charIndex + transposeNumber - 12
-                        else if (charIndex + transposeNumber < 0)
-                            charIndex + transposeNumber + 12
-                        else
-                            charIndex + transposeNumber
+                        calculateIndex(charIndex, transposeNumber)
                     ]
                     charNumber += 1
                 }
@@ -110,12 +75,7 @@ class TransposeSongUseCase @Inject constructor() {
                 minorChordsList.contains(actualChar) -> {
                     val charIndex = minorChordsList.indexOf(actualChar)
                     transposedString += minorChordsList[
-                        if (charIndex + transposeNumber > 11)
-                            charIndex + transposeNumber - 12
-                        else if (charIndex + transposeNumber < 0)
-                            charIndex + transposeNumber + 12
-                        else
-                            charIndex + transposeNumber
+                        calculateIndex(charIndex, transposeNumber)
                     ]
                     charNumber += 1
                 }
@@ -128,6 +88,14 @@ class TransposeSongUseCase @Inject constructor() {
         }
         return transposedString
     }
+
+    private fun calculateIndex(charIndex: Int, transposeNumber: Int) =
+        if (charIndex + transposeNumber > 11)
+            charIndex + transposeNumber - 12
+        else if (charIndex + transposeNumber < 0)
+            charIndex + transposeNumber + 12
+        else
+            charIndex + transposeNumber
 
 
     companion object {

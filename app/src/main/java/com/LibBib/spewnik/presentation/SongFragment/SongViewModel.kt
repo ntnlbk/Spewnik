@@ -41,6 +41,7 @@ class SongViewModel @AssistedInject constructor(
     }
 
     private fun parseSong(song: Song) {
+        _state.value = SongFragmentState.Progress
         val songName = song.name
         var songText = song.text
         if (options.isChordsVisible) {
@@ -49,7 +50,7 @@ class SongViewModel @AssistedInject constructor(
             val spannableSongText = SpannableString(songText)
             var counter = 0
             for (i in spannableSongText) {
-                if (i >= 65.toChar() && i <= 122.toChar() || i == 35.toChar() || i == 55.toChar()) {
+                if (isCharPartOfChord(i)) {
                     spannableSongText.setSpan(
                         ForegroundColorSpan(options.chordsColor),
                         counter,
@@ -59,17 +60,28 @@ class SongViewModel @AssistedInject constructor(
                 }
                 counter++
             }
-            _state.value = SongFragmentState.Content(songName, spannableSongText)
+            _state.value = SongFragmentState.Content(songName, spannableSongText, options.textSize)
         } else {
             songText = songText.filterNot {
-                it >= 65.toChar() && it <= 122.toChar() || it == 35.toChar() || it == 55.toChar()
+                isCharPartOfChord(it)
             }
             val spannableSongText = SpannableString(songText)
-            _state.value = SongFragmentState.Content(songName, spannableSongText)
+            _state.value = SongFragmentState.Content(songName, spannableSongText, options.textSize)
         }
     }
 
+    private fun isCharPartOfChord(i: Char) =
+            i >= UPPERCASE_A_DEC_CODE.toChar() &&
+            i <= LOWERCASE_Z_DEC_CODE.toChar() ||
+            i == NUMBER_SIGN_DEC_CODE.toChar() ||
+            i == SEVEN_DEC_CODE.toChar()
+
     companion object {
+
+        private const val UPPERCASE_A_DEC_CODE = 65
+        private const val LOWERCASE_Z_DEC_CODE = 122
+        private const val NUMBER_SIGN_DEC_CODE = 35
+        private const val SEVEN_DEC_CODE = 55
         @Suppress("UNCHECKED_CAST")
         fun factory(
             factory: Factory,
