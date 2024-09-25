@@ -36,6 +36,7 @@ class OptionsFragment : Fragment() {
     private val binding: FragmentOptionsBinding
         get() = _binding ?: throw Exception("FragmentOptionsBinding is null")
 
+    private var actualIsDarkMode: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +81,12 @@ class OptionsFragment : Fragment() {
         binding.transposeNumberTv.text = it.transposeInt.toString()
         binding.textSizeNumberTv.text = it.textSize.toString()
         binding.darkModeCb.isChecked = it.isDarkMode
+        actualIsDarkMode = it.isDarkMode
+        if (actualIsDarkMode) {
+            (requireActivity().application as SpewnikApplication).goNightMode()
+        } else {
+            (requireActivity().application as SpewnikApplication).goNoNightMode()
+        }
     }
 
     private fun setupOnClickListeners() {
@@ -133,7 +140,9 @@ class OptionsFragment : Fragment() {
         }
     }
 
+
     private fun backPressed() {
+        (requireActivity().application as SpewnikApplication).darkMode()
         requireActivity().supportFragmentManager.popBackStack()
     }
 
