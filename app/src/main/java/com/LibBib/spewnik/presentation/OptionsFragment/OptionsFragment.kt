@@ -81,12 +81,6 @@ class OptionsFragment : Fragment() {
         binding.transposeNumberTv.text = it.transposeInt.toString()
         binding.textSizeNumberTv.text = it.textSize.toString()
         binding.darkModeCb.isChecked = it.isDarkMode
-        actualIsDarkMode = it.isDarkMode
-        if (actualIsDarkMode) {
-            (requireActivity().application as SpewnikApplication).goNightMode()
-        } else {
-            (requireActivity().application as SpewnikApplication).goNoNightMode()
-        }
     }
 
     private fun setupOnClickListeners() {

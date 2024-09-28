@@ -96,6 +96,9 @@ class SongListFragment : Fragment() {
                 sortSongListByType(textView)
             }
         }
+        binding.menubtn.setOnClickListener {
+            binding.drawerLayout.open()
+        }
     }
 
     private fun sortSongListByType(i: TextView) {

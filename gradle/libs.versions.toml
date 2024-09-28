@@ -4,6 +4,7 @@ colorpicker = "1.1.6"
 colorpickerview = "2.3.0"
 dagger = "2.51.1"
 datastorePreferencesCore = "1.1.1"
+drawerlayout = "1.2.0"
 fragmentKtxVersion = "1.8.3"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
@@ -21,6 +22,7 @@ roomRuntime = "2.6.1"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferencesCore" }
 androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastorePreferencesCore" }
+androidx-drawerlayout = { module = "androidx.drawerlayout:drawerlayout", version.ref = "drawerlayout" }
 androidx-fragment-compose = { module = "androidx.fragment:fragment-compose", version.ref = "fragmentKtxVersion" }
 androidx-navigation-dynamic-features-fragment = { module = "androidx.navigation:navigation-dynamic-features-fragment", version.ref = "navigationFragmentKtx" }
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }

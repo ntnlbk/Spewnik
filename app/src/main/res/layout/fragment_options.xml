@@ -326,6 +326,7 @@
         android:backgroundTint="#FFD645"
         android:fontFamily="@font/myfont"
         android:text="@string/accept"
+        android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="21sp"
         android:textStyle="bold"

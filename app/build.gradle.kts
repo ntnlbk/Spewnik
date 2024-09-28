@@ -68,6 +68,9 @@ dependencies {
     //color picker
     implementation (libs.colorpickerview)
 
+    //drawer layout, navigation view
+    implementation(libs.androidx.drawerlayout)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
