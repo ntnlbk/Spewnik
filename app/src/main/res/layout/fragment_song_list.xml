@@ -217,6 +217,30 @@
                 android:text="@string/options"
                 android:textColor="@color/C2"
                 android:textSize="17sp"/>
+            <TextView
+                android:id="@+id/info_tv"
+                android:layout_width="196dp"
+                android:layout_height="wrap_content"
+                ads:layout_constraintTop_toBottomOf="@id/options_tv"
+                ads:layout_constraintStart_toStartOf="@id/nav_view_constrain_layout"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="50dp"
+                android:fontFamily="@font/myfont"
+                android:text="@string/information"
+                android:textColor="@color/C2"
+                android:textSize="17sp"/>
+            <TextView
+                android:id="@+id/random_song_tv"
+                android:layout_width="196dp"
+                android:layout_height="wrap_content"
+                ads:layout_constraintTop_toBottomOf="@id/info_tv"
+                ads:layout_constraintStart_toStartOf="@id/nav_view_constrain_layout"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="50dp"
+                android:fontFamily="@font/myfont"
+                android:text="@string/random_song"
+                android:textColor="@color/C2"
+                android:textSize="17sp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.navigation.NavigationView>

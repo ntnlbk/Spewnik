@@ -99,12 +99,18 @@ class SongListFragment : Fragment() {
         binding.menubtn.setOnClickListener {
             binding.drawerLayout.open()
         }
+        binding.optionsTv.setOnClickListener {
+            findNavController().navigate(
+                SongListFragmentDirections.actionSongListFragmentToOptionsFragment()
+            )
+        }
     }
 
     private fun sortSongListByType(i: TextView) {
         viewModel.sortSongListByType(i.text.toString())
 
     }
+
 
     private fun observeViewModel() {
         lifecycleScope.launch {

@@ -14,6 +14,9 @@
             app:popUpToSaveState="true"
             android:id="@+id/action_songListFragment_to_songFragment"
             app:destination="@id/songFragment" />
+        <action
+            android:id="@+id/action_songListFragment_to_optionsFragment"
+            app:destination="@id/optionsFragment" />
     </fragment>
     <fragment
         android:id="@+id/songFragment"
