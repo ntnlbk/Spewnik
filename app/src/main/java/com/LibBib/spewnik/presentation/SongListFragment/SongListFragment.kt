@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +23,7 @@ import com.LibBib.spewnik.di.ViewModelFactory
 import com.LibBib.spewnik.domain.Song
 import com.LibBib.spewnik.domain.SongType
 import com.LibBib.spewnik.presentation.SongFragment.SongFragment
+import com.LibBib.spewnik.presentation.SongFragment.SongFragment.Companion.SONG_FRAGMENT_BACK_STACK_NAME
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -64,6 +66,11 @@ class SongListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupDrawerLayout()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         component.inject(this)
@@ -96,6 +103,18 @@ class SongListFragment : Fragment() {
                 sortSongListByType(textView)
             }
         }
+    }
+
+    private fun setupDrawerLayout() {
+        if (isPortraitScapeMode()) {
+            enableDrawerLayout()
+        } else {
+            disableDrawerLayout()
+        }
+    }
+
+    private fun enableDrawerLayout() {
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         binding.menubtn.setOnClickListener {
             binding.drawerLayout.open()
         }
@@ -104,6 +123,13 @@ class SongListFragment : Fragment() {
                 SongListFragmentDirections.actionSongListFragmentToOptionsFragment()
             )
         }
+        binding.mainTv.setOnClickListener {
+            binding.drawerLayout.close()
+        }
+    }
+
+    private fun disableDrawerLayout() {
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
     }
 
     private fun sortSongListByType(i: TextView) {
@@ -121,6 +147,7 @@ class SongListFragment : Fragment() {
                         binding.listProgressBar.visibility = View.INVISIBLE
                         colorTypeTextViews(it.currentSongType)
                     }
+
                     is SongListFragmentState.Progress -> {
                         binding.listProgressBar.visibility = View.VISIBLE
                     }
@@ -157,17 +184,20 @@ class SongListFragment : Fragment() {
     }
 
     private fun launchSongFragment(it: Song) {
-        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        if (isPortraitScapeMode()) {
             launchInPortraitMode(it)
         } else {
             launchWithLandscapeMode(it)
         }
     }
 
+    private fun isPortraitScapeMode() =
+        resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+
     private fun launchWithLandscapeMode(it: Song) {
         val fragment = SongFragment.newInstance(it.id)
         requireActivity().supportFragmentManager.popBackStack(
-            "song_fragment_backstack",
+            SONG_FRAGMENT_BACK_STACK_NAME,
             FragmentManager.POP_BACK_STACK_INCLUSIVE
         )
         requireActivity().supportFragmentManager.beginTransaction()
@@ -189,7 +219,4 @@ class SongListFragment : Fragment() {
         super.onDestroyView()
     }
 
-    companion object {
-        const val SONG_FRAGMENT_BACK_STACK_NAME = "song_fragment_backstack"
-    }
 }

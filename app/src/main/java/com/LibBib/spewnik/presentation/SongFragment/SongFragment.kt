@@ -142,6 +142,7 @@ class SongFragment : Fragment() {
     }
 
     companion object {
+        const val SONG_FRAGMENT_BACK_STACK_NAME = "song_fragment_backstack"
         private const val TEXT_VIEW_DEFAULT_TEXT_SIZE = 20
         private const val SONG_ID_DEFAULT_VALUE = -1
         private const val SONG_ID_KEY_ARG = "song arg"

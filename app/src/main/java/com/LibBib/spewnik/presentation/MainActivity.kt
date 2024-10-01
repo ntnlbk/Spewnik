@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import com.LibBib.spewnik.databinding.ActivityMainBinding
-import com.LibBib.spewnik.presentation.SongListFragment.SongListFragment.Companion.SONG_FRAGMENT_BACK_STACK_NAME
+import com.LibBib.spewnik.presentation.SongFragment.SongFragment.Companion.SONG_FRAGMENT_BACK_STACK_NAME
 
 
 class MainActivity : AppCompatActivity() {
@@ -16,6 +16,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        clearActivity()
+    }
+
+    private fun clearActivity() {
         supportFragmentManager.popBackStack(
             SONG_FRAGMENT_BACK_STACK_NAME,
             FragmentManager.POP_BACK_STACK_INCLUSIVE
