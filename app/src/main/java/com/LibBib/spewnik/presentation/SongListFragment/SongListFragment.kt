@@ -129,6 +129,11 @@ class SongListFragment : Fragment() {
         binding.randomSongTv.setOnClickListener {
             adapter.launchRandomSong()
         }
+        binding.infoTv.setOnClickListener {
+            findNavController().navigate(
+                SongListFragmentDirections.actionSongListFragmentToAboutUsFragment()
+            )
+        }
     }
 
     private fun disableDrawerLayout() {
