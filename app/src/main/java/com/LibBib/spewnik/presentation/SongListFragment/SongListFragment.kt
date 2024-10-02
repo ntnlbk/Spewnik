@@ -126,6 +126,9 @@ class SongListFragment : Fragment() {
         binding.mainTv.setOnClickListener {
             binding.drawerLayout.close()
         }
+        binding.randomSongTv.setOnClickListener {
+            adapter.launchRandomSong()
+        }
     }
 
     private fun disableDrawerLayout() {

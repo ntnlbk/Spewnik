@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.LibBib.spewnik.databinding.SongItemBinding
 import com.LibBib.spewnik.domain.Song
 import javax.inject.Inject
+import kotlin.random.Random
 
 class SongListAdapter @Inject constructor() : ListAdapter<Song, SongListAdapter.SongViewHolder>(
     SongDiffCallback()
@@ -29,5 +30,8 @@ class SongListAdapter @Inject constructor() : ListAdapter<Song, SongListAdapter.
         holder.binding.root.setOnClickListener {
             onSongItemClickListener?.invoke(song)
         }
+    }
+    fun launchRandomSong(){
+        onSongItemClickListener?.let { it(getItem(Random.nextInt(0, currentList.size))) }
     }
 }
