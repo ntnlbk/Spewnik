@@ -5,14 +5,15 @@ plugins {
     id("kotlin-kapt")
     id("kotlin-parcelize")
     id ("androidx.navigation.safeargs.kotlin")
+    id("com.google.gms.google-services")
 }
 
 android {
-    namespace = "com.LibBib.spewnik"
+    namespace = "com.LibBib.spevn"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.LibBib.spewnik"
+        applicationId = "com.LibBib.spevn"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -70,6 +71,10 @@ dependencies {
 
     //drawer layout, navigation view
     implementation(libs.androidx.drawerlayout)
+
+    //firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

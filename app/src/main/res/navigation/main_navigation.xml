@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/songListFragment"
-        android:name="com.LibBib.spewnik.presentation.SongListFragment.SongListFragment"
+        android:name="com.LibBib.spevn.presentation.SongListFragment.SongListFragment"
         android:label="SongListFragment" >
         <action
             app:restoreState="true"
@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/songFragment"
-        android:name="com.LibBib.spewnik.presentation.SongFragment.SongFragment"
+        android:name="com.LibBib.spevn.presentation.SongFragment.SongFragment"
         android:label="fragment_song"
         tools:layout="@layout/fragment_song" >
         <argument
@@ -36,11 +36,11 @@
     </fragment>
     <fragment
         android:id="@+id/optionsFragment"
-        android:name="com.LibBib.spewnik.presentation.OptionsFragment.OptionsFragment"
+        android:name="com.LibBib.spevn.presentation.OptionsFragment.OptionsFragment"
         android:label="fragment_options"
         tools:layout="@layout/fragment_options" />
     <fragment
         android:id="@+id/aboutUsFragment"
-        android:name="com.LibBib.spewnik.presentation.AboutUsFragment.AboutUsFragment"
+        android:name="com.LibBib.spevn.presentation.AboutUsFragment.AboutUsFragment"
         android:label="AboutUsFragment" />
 </navigation>

@@ -5,6 +5,7 @@ colorpickerview = "2.3.0"
 dagger = "2.51.1"
 datastorePreferencesCore = "1.1.1"
 drawerlayout = "1.2.0"
+firebaseBom = "33.4.0"
 fragmentKtxVersion = "1.8.3"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
@@ -35,6 +36,8 @@ colorpicker = { module = "com.github.duanhong169:colorpicker", version.ref = "co
 colorpickerview = { module = "com.github.skydoves:colorpickerview", version.ref = "colorpickerview" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtxVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
