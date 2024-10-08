@@ -4,9 +4,11 @@ import android.app.Application
 import com.LibBib.spevn.data.SongListDao
 import com.LibBib.spevn.data.SongListRepositoryImpl
 import com.LibBib.spevn.data.SongRoomDatabase
+import com.LibBib.spevn.data.firebase.FirebaseRepository
 import com.LibBib.spevn.data.options.OptionsRepositoryImpl
 import com.LibBib.spevn.domain.SongListRepository
 import com.LibBib.spevn.domain.options.OptionsRepository
+import com.LibBib.spevn.domain.remoteDB.RemoteDatabaseRepository
 import dagger.Module
 import dagger.Provides
 
@@ -20,6 +22,11 @@ class DataModule {
 
     @Provides
     fun bindOptionsRepository(impl: OptionsRepositoryImpl): OptionsRepository {
+        return impl
+    }
+
+    @Provides
+    fun bindDatabaseRepository(impl: FirebaseRepository): RemoteDatabaseRepository {
         return impl
     }
 

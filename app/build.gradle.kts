@@ -75,6 +75,8 @@ dependencies {
     //firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
+    //firebase realtime database
+    implementation(libs.firebase.database)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
