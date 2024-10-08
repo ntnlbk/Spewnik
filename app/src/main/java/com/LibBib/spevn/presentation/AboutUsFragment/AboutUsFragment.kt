@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.LibBib.spevn.databinding.FragmentAboutUsBinding
+import com.LibBib.spevn.presentation.MainActivity.Companion.GOOGLE_PLAY_APP
+import com.LibBib.spevn.presentation.MainActivity.Companion.GOOGLE_PLAY_APP_URL
 
 class AboutUsFragment : Fragment() {
 
@@ -28,9 +30,9 @@ class AboutUsFragment : Fragment() {
         }
         binding.helpProjectBtn.setOnClickListener {
             try {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.LibBib.spevn")))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(GOOGLE_PLAY_APP_URL)))
             } catch (e: ActivityNotFoundException) {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.LibBib.spevn")))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(GOOGLE_PLAY_APP)))
             }
         }
     }
