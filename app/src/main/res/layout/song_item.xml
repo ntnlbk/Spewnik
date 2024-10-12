@@ -16,13 +16,11 @@
         android:id="@+id/tv_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginRight="15dp"
         android:background="@drawable/song_name_tv"
         android:paddingStart="7dp"
         android:textColor="@color/C2"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/moreButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Name">
@@ -34,13 +32,13 @@
         android:id="@+id/tv_types"
         android:layout_width="0dp"
         android:layout_height="25dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
         android:fontFamily="@font/myfont"
         android:paddingStart="7dp"
         android:textColor="#89858D"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/imageLine"
-        app:layout_constraintEnd_toStartOf="@+id/moreButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_name"
         tools:text="types,types, types" />
@@ -49,21 +47,9 @@
         android:id="@+id/imageLine"
         android:layout_width="match_parent"
         android:layout_height="3dp"
+        android:layout_marginBottom="5dp"
         android:src="@drawable/line"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/moreButton"
-        tools:layout_editor_absoluteX="-10dp" />
-
-    <ImageButton
-        android:id="@+id/moreButton"
-        android:layout_width="70dp"
-        android:layout_height="72dp"
-        android:layout_marginEnd="10dp"
-        android:background="@color/C1"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/imageLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/more_icon" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

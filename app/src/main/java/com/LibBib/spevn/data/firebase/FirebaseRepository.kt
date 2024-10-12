@@ -17,7 +17,7 @@ class FirebaseRepository @Inject constructor() : RemoteDatabaseRepository {
     private var resultFlow = MutableSharedFlow<Int>()
 
 
-    override suspend fun getActualVersionUseCase(): SharedFlow<Int> {
+    override fun getActualVersionUseCase(): SharedFlow<Int> {
         val database = Firebase.database.reference
 
         val versionRef = database.child(FIREBASE_REALTIME_DATABASE_VERSION_NAME)
