@@ -17,6 +17,7 @@ material = "1.12.0"
 activity = "1.9.0"
 constraintlayout = "2.1.4"
 navigationFragmentKtx = "2.8.0"
+playServicesAds = "23.4.0"
 roomRuntime = "2.6.1"
 
 [libraries]
@@ -47,6 +48,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

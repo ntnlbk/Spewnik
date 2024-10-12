@@ -38,6 +38,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+
     private suspend fun checkUpdate() {
         getActualVersionUseCase.invoke().collect {
             if (it != BUILD_ACTUAL_VERSION) {

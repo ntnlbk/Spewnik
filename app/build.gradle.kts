@@ -78,6 +78,9 @@ dependencies {
     //firebase realtime database
     implementation(libs.firebase.database)
 
+    //google ad sdk
+    implementation (libs.play.services.ads)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
