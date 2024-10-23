@@ -30,7 +30,7 @@
 
     <TextView
         android:id="@+id/tv_types"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
