@@ -2,6 +2,7 @@ package com.LibBib.spevn.presentation.SongFragment
 
 import android.text.Spannable
 import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -23,7 +24,7 @@ class SongViewModel @AssistedInject constructor(
     @Assisted private val songId: Int,
     private val getSongUseCase: GetSongUseCase,
     private val getOptionsUseCase: GetOptionsUseCase,
-    private val transposeSongUseCase: TransposeSongUseCase
+    private val transposeSongUseCase: TransposeSongUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<SongFragmentState>(SongFragmentState.Progress)
@@ -43,45 +44,57 @@ class SongViewModel @AssistedInject constructor(
     private fun parseSong(song: Song) {
         _state.value = SongFragmentState.Progress
         val songName = song.name
-        var songText = song.text
-        if (options.isChordsVisible) {
-            if(options.transposeInt != 0)
-                songText = transposeSongUseCase(songText, options.transposeInt)
-            val spannableSongText = SpannableString(songText)
-            var counter = 0
-            for (i in spannableSongText) {
-                if (isCharPartOfChord(i)) {
-                    spannableSongText.setSpan(
-                        ForegroundColorSpan(options.chordsColor),
-                        counter,
-                        counter + 1,
-                        Spannable.SPAN_EXCLUSIVE_INCLUSIVE
-                    )
-                }
-                counter++
-            }
-            _state.value = SongFragmentState.Content(songName, spannableSongText, options.textSize)
-        } else {
-            songText = songText.filterNot {
-                isCharPartOfChord(it)
-            }
-            val spannableSongText = SpannableString(songText)
-            _state.value = SongFragmentState.Content(songName, spannableSongText, options.textSize)
-        }
+        val songText = song.text
+
+        val spannableSongText = SpannableString(parseSongText(songText))
+        _state.value = SongFragmentState.Content(songName, spannableSongText, options.textSize)
+
+
     }
 
-    private fun isCharPartOfChord(i: Char) =
-            i >= UPPERCASE_A_DEC_CODE.toChar() &&
-            i <= LOWERCASE_Z_DEC_CODE.toChar() ||
-            i == NUMBER_SIGN_DEC_CODE.toChar() ||
-            i == SEVEN_DEC_CODE.toChar()
+    private fun parseSongText(songText: String): SpannableStringBuilder {
+        val lines = songText.lines()
+        val resultSpannable = SpannableStringBuilder()
+        for (line in lines) {
+            var spannableLine: SpannableString
+            if (isChordLine(line)) {
+                if(options.isChordsVisible){
+                    var chordLine = formatChordLine(line)
+                    if (options.transposeInt != ZERO_TRANSPOSE)
+                        chordLine = transposeSongUseCase(chordLine, options.transposeInt)
+                    spannableLine = SpannableString(chordLine)
+                    spannableLine.setSpan(
+                        ForegroundColorSpan(options.chordsColor),
+                        0,
+                        chordLine.length - 1,
+                        Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+                    )
+                } else{
+                    spannableLine = SpannableString(EMPTY_STRING)
+                }
+
+            } else {
+                spannableLine = SpannableString(line + NEW_LINE_CHAR)
+            }
+
+            resultSpannable.append(spannableLine)
+        }
+
+        return resultSpannable
+
+    }
+
+    private fun formatChordLine(line: String) = line.filterNot { it == CHORD_LINE_BEGIN } + NEW_LINE_CHAR
+
+    private fun isChordLine(line: String) = line.isNotEmpty() && line[0] == CHORD_LINE_BEGIN
 
     companion object {
 
-        private const val UPPERCASE_A_DEC_CODE = 65
-        private const val LOWERCASE_Z_DEC_CODE = 122
-        private const val NUMBER_SIGN_DEC_CODE = 35
-        private const val SEVEN_DEC_CODE = 55
+        private const val ZERO_TRANSPOSE = 0
+        private const val EMPTY_STRING = ""
+        private const val CHORD_LINE_BEGIN = '|'
+        private const val NEW_LINE_CHAR = '\n'
+
         @Suppress("UNCHECKED_CAST")
         fun factory(
             factory: Factory,
