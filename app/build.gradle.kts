@@ -2,7 +2,6 @@ plugins {
     id("com.google.devtools.ksp")
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("kotlin-kapt")
     id("kotlin-parcelize")
     id ("androidx.navigation.safeargs.kotlin")
     id("com.google.gms.google-services")
@@ -46,11 +45,11 @@ android {
 dependencies {
     //dagger 2
     implementation(libs.dagger)
-    kapt(libs.dagger.compiler)
+    ksp(libs.dagger.compiler)
 
     //room
     implementation(libs.androidx.room.runtime)
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
     //fragments
