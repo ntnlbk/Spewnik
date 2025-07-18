@@ -105,7 +105,14 @@ class SongListFragment : Fragment() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                viewModel.searchInList(binding.searchEt.text.toString())
+                val searchText = binding.searchEt.text.toString()
+                if (searchText != EMPTY_STRING) {
+                    adapter.colorResults(searchText.lowercase())
+                } else {
+                    adapter.resetColors()
+                }
+                viewModel.searchInList(searchText)
+                setupRecyclerView()
                 binding.recyclerView.scrollToPosition(0)
             }
 
@@ -247,6 +254,6 @@ class SongListFragment : Fragment() {
 
     companion object {
         private const val AD_UNIT_ID = "ca-app-pub-2762019052396240/1577836946"
-
+        private const val EMPTY_STRING = ""
     }
 }
