@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object{
-        private const val BUILD_ACTUAL_VERSION = 15
+        private const val BUILD_ACTUAL_VERSION = 16
         const val GOOGLE_PLAY_APP = "https://play.google.com/store/apps/details?id=com.LibBib.spevn"
         const val GOOGLE_PLAY_APP_URL = "market://details?id=com.LibBib.spevn"
     }
