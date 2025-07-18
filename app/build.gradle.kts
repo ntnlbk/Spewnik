@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.LibBib.spevn"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.LibBib.spevn"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 32
         versionName = "32"
 
