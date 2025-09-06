@@ -1,10 +1,14 @@
 package com.LibBib.spevn.presentation
 
 import android.content.Intent
-import android.net.Uri
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
+import androidx.core.net.toUri
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import com.LibBib.spevn.R
@@ -19,6 +23,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var sharedPreferences: SharedPreferences
 
     @Inject
     lateinit var getActualVersionUseCase: GetActualVersionUseCase
@@ -33,11 +38,25 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         clearActivity()
+        sharedPreferences = getSharedPreferences(prefsName, MODE_PRIVATE)
+        checkAndShowWhatsNewDialog()
         lifecycleScope.launch {
             checkUpdate()
         }
     }
 
+    private fun checkAndShowWhatsNewDialog() {
+
+        val lastShownVersionCode = sharedPreferences.getInt(lastVersionKey, 0)
+
+        if (BUILD_ACTUAL_VERSION > lastShownVersionCode) {
+            // Show the "What's New" dialog
+            WhatsNewDialogFragment().show(supportFragmentManager, "WhatsNewDialog")
+
+            // Update the last shown version in SharedPreferences
+            sharedPreferences.edit { putInt(lastVersionKey, BUILD_ACTUAL_VERSION) }
+        }
+    }
 
 
     private suspend fun checkUpdate() {
@@ -61,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         ) { _, _ ->
             val intent = Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse(GOOGLE_PLAY_APP)
+                GOOGLE_PLAY_APP.toUri()
             )
             startActivity(intent)
         }
@@ -73,6 +92,8 @@ class MainActivity : AppCompatActivity() {
         builder.show()
     }
 
+
+
     private fun clearActivity() {
         supportFragmentManager.popBackStack(
             SONG_FRAGMENT_BACK_STACK_NAME,
@@ -81,8 +102,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object{
+        class WhatsNewDialogFragment : DialogFragment() {
+
+            override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
+                return activity?.let {
+                    val builder = AlertDialog.Builder(it)
+                    val inflater = requireActivity().layoutInflater
+                    val view = inflater.inflate(R.layout.dialog_whats_new, null)
+                    builder.setView(view)
+                    view.findViewById<TextView>(R.id.exit_tv).setOnClickListener {
+                        dialog?.dismiss()
+                    }
+                    builder.create()
+                } ?: throw IllegalStateException("Activity cannot be null")
+            }
+        }
+
         private const val BUILD_ACTUAL_VERSION = 16
         const val GOOGLE_PLAY_APP = "https://play.google.com/store/apps/details?id=com.LibBib.spevn"
         const val GOOGLE_PLAY_APP_URL = "market://details?id=com.LibBib.spevn"
+        private const val prefsName = "AppPrefs"
+        private const val lastVersionKey = "last_version_code"
     }
 }

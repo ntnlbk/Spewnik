@@ -31,4 +31,9 @@
     <string name="accept">Прыняць</string>
     <string name="open_menu">OPEN MENU</string>
     <string name="app_name_menu">Спеўнік</string>
+    <string name="updation">Абнаўленне!</string>
+    <string name="add_new_functions">Дададзена функцыя праслухоўвання некаторых песень. Запісы будуць паступова дадавацца.</string>
+    <string name="if_you_have_some_propositions">Калі вы маеце прапановы песень (або запісаў да ўжо дададзеных песень), якіх яшчэ няма ў дадатку, зараз вы можаце адправіць іх нам, запоўніўшы спецыяльную форму. (гл. \"Дапамога праекту\"). Мы дададзім іх у бібліятэку ў бліжэйшым абнаўленні.</string>
+    <string name="new_songs_were_added">Дададзены новыя песні, выпраўлены абдрукоўкі.</string>
+    <string name="new_possibility_sup">Дададзена магчымасць падтрымаць праект матэрыяльна (гл. \"Дапамога праекту\")</string>
 </resources>
