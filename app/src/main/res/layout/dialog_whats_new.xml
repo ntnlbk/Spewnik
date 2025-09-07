@@ -6,44 +6,41 @@
     android:orientation="vertical"
     android:paddingBottom="21dp">
     <TextView
-        android:id="@+id/textView32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="26dp"
         android:layout_marginTop="48dp"
         android:fontFamily="@font/myfont"
-        android:text="@string/updation"
+        android:text="@string/update_whats_new"
         android:textColor="@color/C2"
         android:textSize="18sp"
         android:textStyle="bold" />
     <TextView
-        android:id="@+id/textView33"
         android:layout_height="wrap_content"
         android:layout_marginLeft="26dp"
         android:layout_width="200dp"
         android:layout_marginRight="26dp"
         android:layout_marginTop="21dp"
         android:fontFamily="@font/myfont"
-        android:text="@string/add_new_functions"
+        android:text="@string/whats_new_first_block"
         android:textColor="@color/C2"
         android:textSize="14sp"
         android:textStyle="normal" />
 
     <TextView
-        android:id="@+id/textView34"
-        android:layout_marginRight="26dp"
-        android:layout_width="200dp"
+        android:id="@+id/go_to_telegram_tv"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="26dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginRight="26dp"
         android:fontFamily="@font/myfont"
-        android:text='@string/if_you_have_some_propositions'
-        android:textColor="@color/C2"
-        android:textSize="14sp"
-        android:textStyle="normal" />
+        android:text='@string/whats_new_second_block'
+        android:textColor="@color/C12"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView36"
         android:layout_marginRight="26dp"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -56,7 +53,6 @@
         android:textStyle="normal" />
 
     <TextView
-        android:id="@+id/textView35"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="26dp"

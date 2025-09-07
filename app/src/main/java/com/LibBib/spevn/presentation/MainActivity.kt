@@ -3,6 +3,8 @@ package com.LibBib.spevn.presentation
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -93,7 +95,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     private fun clearActivity() {
         supportFragmentManager.popBackStack(
             SONG_FRAGMENT_BACK_STACK_NAME,
@@ -101,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    companion object{
+    companion object {
         class WhatsNewDialogFragment : DialogFragment() {
 
             override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
@@ -113,12 +114,31 @@ class MainActivity : AppCompatActivity() {
                     view.findViewById<TextView>(R.id.exit_tv).setOnClickListener {
                         dialog?.dismiss()
                     }
+                    val spanStringGoToTelegram =
+                        SpannableString(getString(R.string.whats_new_second_block))
+                    spanStringGoToTelegram.setSpan(
+                        UnderlineSpan(),
+                        0,
+                        getString(R.string.whats_new_second_block).length,
+                        0
+                    )
+                    with (view.findViewById<TextView>(R.id.go_to_telegram_tv)){
+                        text = spanStringGoToTelegram
+                        setOnClickListener {
+                            val intent = Intent(
+                                Intent.ACTION_VIEW,
+                                TELEGRAM_URL.toUri()
+                            )
+                            startActivity(intent)
+                        }
+                }
                     builder.create()
                 } ?: throw IllegalStateException("Activity cannot be null")
             }
         }
 
         private const val BUILD_ACTUAL_VERSION = 16
+        const val TELEGRAM_URL = "https://t.me/spewnikchat_bot"
         const val GOOGLE_PLAY_APP = "https://play.google.com/store/apps/details?id=com.LibBib.spevn"
         const val GOOGLE_PLAY_APP_URL = "market://details?id=com.LibBib.spevn"
         private const val prefsName = "AppPrefs"
