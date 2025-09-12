@@ -155,6 +155,16 @@
             ads:layout_constraintEnd_toEndOf="parent"
             ads:layout_constraintStart_toStartOf="parent"
             ads:layout_constraintTop_toTopOf="parent" />
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adViewContainer"
+            android:layout_width="wrap_content"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="20dp"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="45dp"
+            tools:layout_editor_absoluteY="665dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
