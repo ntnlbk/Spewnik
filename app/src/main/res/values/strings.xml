@@ -36,4 +36,7 @@
     <string name="whats_new_second_block">Спрабаваць Спеўнік у Telegram</string>
     <string name="new_songs_were_added">Дададзены новыя песні, выпраўлены абдрукоўкі.</string>
     <string name="new_possibility_sup">Дададзена магчымасць падтрымаць праект матэрыяльна (гл. \"Дапамога праекту\")</string>
+    <string name="help_btn_string">Дапамагчы Спеўніку</string>
+    <string name="help_button_content_description">help button</string>
+    <string name="main_logo_content_description">main logo</string>
 </resources>
