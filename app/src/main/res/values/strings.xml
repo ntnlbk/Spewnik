@@ -39,4 +39,6 @@
     <string name="help_btn_string">Дапамагчы Спеўніку</string>
     <string name="help_button_content_description">help button</string>
     <string name="main_logo_content_description">main logo</string>
+    <string name="telegram_button_content_description">telegram content description</string>
+    <string name="telegram_btn_text">Спеўнік у Telegram</string>
 </resources>
