@@ -261,7 +261,6 @@
                 ads:layout_constraintTop_toBottomOf="@id/random_song_tv"
                 ads:layout_constraintStart_toStartOf="@id/nav_view_constrain_layout"
                 android:layout_marginStart="48dp"
-                android:background="@drawable/help_btn_style"
                 android:paddingStart="15dp"
                 android:paddingEnd="45dp"
                 android:paddingTop="8dp"
@@ -274,6 +273,7 @@
 
             <ImageView
                 android:layout_width="15dp"
+                android:id="@+id/heart_icon"
                 android:layout_height="15dp"
                 android:contentDescription="@string/help_button_content_description"
                 ads:srcCompat="@drawable/heart_icon"
@@ -285,9 +285,22 @@
                 android:layout_marginStart="-35dp"
                 android:layout_marginTop="5dp"
                 />
+            <ImageView
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:contentDescription="@string/help_button_content_description"
+                ads:srcCompat="@drawable/icon"
+                tools:layout_editor_absoluteX="66dp"
+                tools:layout_editor_absoluteY="361dp"
+                ads:layout_constraintTop_toTopOf="@id/help_btn_tv"
+                ads:layout_constraintStart_toEndOf="@id/heart_icon"
+                ads:layout_constraintBottom_toBottomOf="@id/help_btn_tv"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="5dp"
+                />
             <TextView
                 android:id="@+id/telegram_btn_tv"
-                android:layout_width="wrap_content"
+                android:layout_width="210dp"
                 android:layout_height="wrap_content"
                 ads:layout_constraintTop_toBottomOf="@id/help_btn_tv"
                 ads:layout_constraintStart_toStartOf="@id/nav_view_constrain_layout"
@@ -316,7 +329,37 @@
                 android:layout_marginStart="-35dp"
                 android:layout_marginTop="5dp"
                 />
+            <TextView
+                android:id="@+id/instagram_btn_tv"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                ads:layout_constraintTop_toBottomOf="@id/telegram_btn_tv"
+                ads:layout_constraintStart_toStartOf="@id/nav_view_constrain_layout"
+                android:layout_marginStart="48dp"
+                android:background="@drawable/instagram_btn_style"
+                android:paddingStart="15dp"
+                android:paddingEnd="45dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_marginTop="38dp"
+                android:fontFamily="@font/myfont"
+                android:text="@string/spewnik_in_instagram"
+                android:textColor="@color/C2"
+                android:textSize="17sp"/>
 
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:contentDescription="@string/telegram_button_content_description"
+                ads:srcCompat="@drawable/instagram_logo"
+                tools:layout_editor_absoluteX="66dp"
+                tools:layout_editor_absoluteY="361dp"
+                ads:layout_constraintTop_toTopOf="@id/instagram_btn_tv"
+                ads:layout_constraintStart_toEndOf="@id/instagram_btn_tv"
+                ads:layout_constraintBottom_toBottomOf="@id/instagram_btn_tv"
+                android:layout_marginStart="-35dp"
+                android:layout_marginTop="5dp"
+                />
 
 
 
