@@ -139,6 +139,7 @@ class MainActivity : AppCompatActivity() {
 
         private const val BUILD_ACTUAL_VERSION = 16
         const val TELEGRAM_URL = "https://t.me/spewnikchat_bot"
+        const val INSTAGRAM_URL = "https://www.instagram.com/spewnik/"
         const val GOOGLE_PLAY_APP = "https://play.google.com/store/apps/details?id=com.LibBib.spevn"
         const val GOOGLE_PLAY_APP_URL = "market://details?id=com.LibBib.spevn"
         private const val prefsName = "AppPrefs"

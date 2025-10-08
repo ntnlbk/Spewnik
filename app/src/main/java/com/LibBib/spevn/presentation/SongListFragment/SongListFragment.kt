@@ -1,6 +1,8 @@
 package com.LibBib.spevn.presentation.SongListFragment
 
+import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -30,6 +32,9 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import androidx.core.net.toUri
+import com.LibBib.spevn.presentation.MainActivity.Companion.INSTAGRAM_URL
+import com.LibBib.spevn.presentation.MainActivity.Companion.TELEGRAM_URL
 
 
 class SongListFragment : Fragment() {
@@ -159,7 +164,22 @@ class SongListFragment : Fragment() {
                 SongListFragmentDirections.actionSongListFragmentToAboutUsFragment()
             )
         }
+        binding.instagramBtnTv.setOnClickListener {
+            openUrl(INSTAGRAM_URL.toUri())
+        }
+        binding.telegramBtnTv.setOnClickListener {
+            openUrl(TELEGRAM_URL.toUri())
+        }
     }
+
+    private fun openUrl(url: Uri) {
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            url
+        )
+        startActivity(intent)
+    }
+
 
     private fun disableDrawerLayout() {
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
