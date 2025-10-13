@@ -26,10 +26,6 @@ import com.LibBib.spevn.presentation.SongFragment.SongFragment
 import com.LibBib.spevn.presentation.SongFragment.SongFragment.Companion.SONG_FRAGMENT_BACK_STACK_NAME
 import com.LibBib.spevn.R
 import com.LibBib.spevn.databinding.FragmentSongListBinding
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.core.net.toUri
@@ -84,23 +80,9 @@ class SongListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         component.inject(this)
         setupRecyclerView()
-        lifecycleScope.launch {
-            loadAd()
-        }
         observeViewModel()
         setOnClickListeners()
         setOnTextChangedListener()
-    }
-
-    private fun loadAd() {
-        MobileAds.initialize(requireActivity())
-        val adView = AdView(requireActivity())
-        adView.adUnitId = AD_UNIT_ID
-        adView.setAdSize(AdSize.BANNER)
-        binding.adViewContainer.removeAllViews()
-        binding.adViewContainer.addView(adView)
-        val adRequest = AdRequest.Builder().build()
-        adView.loadAd(adRequest)
     }
 
     private fun setOnTextChangedListener() {
@@ -273,7 +255,6 @@ class SongListFragment : Fragment() {
     }
 
     companion object {
-        private const val AD_UNIT_ID = "ca-app-pub-2762019052396240/1577836946"
         private const val EMPTY_STRING = ""
     }
 }
