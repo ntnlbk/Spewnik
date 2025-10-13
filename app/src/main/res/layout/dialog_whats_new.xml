@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/whatsnewbackgorund"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/whats_new_dialog_background"
     android:orientation="vertical"
     android:paddingBottom="21dp">
     <TextView
@@ -35,7 +36,7 @@
         android:layout_marginTop="18dp"
         android:layout_marginRight="26dp"
         android:fontFamily="@font/myfont"
-        android:text='@string/whats_new_second_block'
+        tools:text='@string/whats_new_second_block'
         android:textColor="@color/C12"
         android:textSize="18sp"
         android:textStyle="bold" />

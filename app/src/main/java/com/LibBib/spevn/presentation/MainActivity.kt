@@ -1,16 +1,13 @@
 package com.LibBib.spevn.presentation
 
+import WhatsNewDialogFragment
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.style.UnderlineSpan
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.core.net.toUri
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import com.LibBib.spevn.R
@@ -51,13 +48,15 @@ class MainActivity : AppCompatActivity() {
 
         val lastShownVersionCode = sharedPreferences.getInt(lastVersionKey, 0)
 
-        if (BUILD_ACTUAL_VERSION > lastShownVersionCode) {
-            // Show the "What's New" dialog
-            WhatsNewDialogFragment().show(supportFragmentManager, "WhatsNewDialog")
+        //if (BUILD_ACTUAL_VERSION > lastShownVersionCode) {
+        // Show the "What's New" dialog
 
-            // Update the last shown version in SharedPreferences
-            sharedPreferences.edit { putInt(lastVersionKey, BUILD_ACTUAL_VERSION) }
-        }
+
+            WhatsNewDialogFragment().show(supportFragmentManager, WHATS_NEW_DIALOG_TAG)
+
+        // Update the last shown version in SharedPreferences
+        sharedPreferences.edit { putInt(lastVersionKey, BUILD_ACTUAL_VERSION) }
+        //  }
     }
 
 
@@ -103,41 +102,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        class WhatsNewDialogFragment : DialogFragment() {
-
-            override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
-                return activity?.let {
-                    val builder = AlertDialog.Builder(it)
-                    val inflater = requireActivity().layoutInflater
-                    val view = inflater.inflate(R.layout.dialog_whats_new, null)
-                    builder.setView(view)
-                    view.findViewById<TextView>(R.id.exit_tv).setOnClickListener {
-                        dialog?.dismiss()
-                    }
-                    val spanStringGoToTelegram =
-                        SpannableString(getString(R.string.whats_new_second_block))
-                    spanStringGoToTelegram.setSpan(
-                        UnderlineSpan(),
-                        0,
-                        getString(R.string.whats_new_second_block).length,
-                        0
-                    )
-                    with (view.findViewById<TextView>(R.id.go_to_telegram_tv)){
-                        text = spanStringGoToTelegram
-                        setOnClickListener {
-                            val intent = Intent(
-                                Intent.ACTION_VIEW,
-                                TELEGRAM_URL.toUri()
-                            )
-                            startActivity(intent)
-                        }
-                }
-                    builder.create()
-                } ?: throw IllegalStateException("Activity cannot be null")
-            }
-        }
-
         private const val BUILD_ACTUAL_VERSION = 16
+        private const val WHATS_NEW_DIALOG_TAG = "WhatsNewDialog"
         const val TELEGRAM_URL = "https://t.me/spewnikchat_bot"
         const val INSTAGRAM_URL = "https://www.instagram.com/spewnik/"
         const val GOOGLE_PLAY_APP = "https://play.google.com/store/apps/details?id=com.LibBib.spevn"
