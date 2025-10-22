@@ -42,17 +42,28 @@
         android:textStyle="bold" />
 
     <TextView
-        android:layout_marginRight="26dp"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="26dp"
         android:layout_marginTop="21dp"
+        android:layout_marginRight="26dp"
         android:fontFamily="@font/myfont"
-        android:text='@string/new_songs_were_added'
+        android:text='@string/instagram_remebering_whats_new_dialog'
         android:textColor="@color/C2"
         android:textSize="14sp"
         android:textStyle="normal" />
-
+    <TextView
+        android:id="@+id/go_to_instagram_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="26dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginRight="26dp"
+        android:fontFamily="@font/myfont"
+        tools:text='@string/go_to_instagram_tv'
+        android:textColor="@color/C12"
+        android:textSize="18sp"
+        android:textStyle="bold" />
     <TextView
         android:layout_width="200dp"
         android:layout_height="wrap_content"

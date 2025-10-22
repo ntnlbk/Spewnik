@@ -35,11 +35,13 @@
     <string name="whats_new_first_block">Спеўнік цяпер будзе даступны для ўсіх у тэлеграме. Мы запускаем SpewnikBot - бота, які мае ўсе песні і функцыі з Спеўніка і дадаткова AI асыстэнта, які дапаможа выбраць песні, пракласці іх на давольную мову і шмат чаго іншага.</string>
     <string name="whats_new_second_block">Спрабаваць Спеўнік у Telegram</string>
     <string name="new_songs_were_added">Дададзены новыя песні, выпраўлены абдрукоўкі.</string>
-    <string name="new_possibility_sup">Дададзена магчымасць падтрымаць праект матэрыяльна (гл. \"Дапамога праекту\")</string>
+    <string name="new_possibility_sup">Дададзена магчымасць падтрымаць праект (гл. \"Дапамога праекту\")</string>
     <string name="help_btn_string">Дапамагчы Спеўніку</string>
     <string name="help_button_content_description">help button</string>
     <string name="main_logo_content_description">main logo</string>
     <string name="telegram_button_content_description">telegram content description</string>
     <string name="telegram_btn_text">Спеўнік у Telegram</string>
     <string name="spewnik_in_instagram">Спеўнік у Instagram</string>
+    <string name="instagram_remebering_whats_new_dialog">Нагадваем, што ў Спеўніка ёсць Instagram старонка, дзе вы заўсёды можаце напісаць нам!</string>
+    <string name="go_to_instagram_tv">Напісаць нам у Instagram</string>
 </resources>
