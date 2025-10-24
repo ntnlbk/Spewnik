@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_songListFragment_to_aboutUsFragment"
             app:destination="@id/aboutUsFragment" />
+        <action
+            android:id="@+id/action_songListFragment_to_helpUsFragment"
+            app:destination="@id/helpUsFragment" />
     </fragment>
     <fragment
         android:id="@+id/songFragment"
@@ -43,4 +46,9 @@
         android:id="@+id/aboutUsFragment"
         android:name="com.LibBib.spevn.presentation.AboutUsFragment.AboutUsFragment"
         android:label="AboutUsFragment" />
+    <fragment
+        android:id="@+id/helpUsFragment"
+        android:name="com.LibBib.spevn.presentation.HelpUsFragment.HelpUsFragment"
+        android:label="fragment_help_us"
+        tools:layout="@layout/fragment_help_us" />
 </navigation>

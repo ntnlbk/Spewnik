@@ -51,7 +51,6 @@ class MainActivity : AppCompatActivity() {
         if (BUILD_ACTUAL_VERSION > lastShownVersionCode) {
          //Show the "What's New" dialog
 
-
             WhatsNewDialogFragment().show(supportFragmentManager, WHATS_NEW_DIALOG_TAG)
 
         // Update the last shown version in SharedPreferences

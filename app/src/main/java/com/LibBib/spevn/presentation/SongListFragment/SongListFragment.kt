@@ -152,6 +152,15 @@ class SongListFragment : Fragment() {
         binding.telegramBtnTv.setOnClickListener {
             openUrl(TELEGRAM_URL.toUri())
         }
+        binding.helpBtnTv.setOnClickListener {
+            launchHelpUsFragment()
+        }
+    }
+
+    private fun launchHelpUsFragment(){
+        findNavController().navigate(
+            SongListFragmentDirections.actionSongListFragmentToHelpUsFragment()
+        )
     }
 
     private fun openUrl(url: Uri) {
