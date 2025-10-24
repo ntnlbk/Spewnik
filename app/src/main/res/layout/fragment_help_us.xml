@@ -1,13 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.HelpUsFragment.HelpUsFragment">
+    android:background="@color/C1">
+
+    <ImageButton
+        android:id="@+id/help_us_back_btn"
+        android:layout_width="82dp"
+        android:layout_height="71.57dp"
+        android:background="#00FFFFFF"
+        android:contentDescription="@string/back_btn_content_description"
+        android:paddingStart="32dp"
+        android:paddingTop="24.42dp"
+        android:paddingEnd="30dp"
+        android:paddingBottom="30dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/yellow_back_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:id="@+id/information_tv"
+        android:layout_width="300dp"
+        android:layout_height="74dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="18dp"
+        android:fontFamily="@font/myfont"
+        android:text="@string/help_project_tv"
+        android:textColor="@color/C2"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/help_us_back_btn" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/main_content_tv"
+        android:layout_width="314dp"
+        android:layout_height="290dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/myfont"
+        android:text="@string/help_us_fragment_main_content"
+        android:textColor="@color/C2"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/information_tv" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/help_us_icon"
+        app:layout_constraintTop_toBottomOf="@+id/main_content_tv"
+        app:layout_constraintStart_toStartOf="@+id/main_content_tv"
+        android:layout_marginTop="-80dp"
+        android:layout_marginStart="100dp"
+        tools:layout_editor_absoluteX="101dp"
+        tools:layout_editor_absoluteY="481dp" />
+
+    <Button
+        android:id="@+id/help_project_btn"
+        android:layout_width="320dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/yellow"
+        android:fontFamily="@font/myfont"
+        android:text="@string/help_project"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="19sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textStyle="bold" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
