@@ -47,4 +47,5 @@
     <string name="back_btn_content_description">back_btn</string>
     <string name="help_project_tv">Дапамагчы\nпраекту!</string>
     <string name="help_us_fragment_main_content">Прывітанне!\nМы шукаем акорды песень, аўдыёзапісы.\nУсіх жадаючых супрацоўнічаць запрашаем! Калі ў вас ёсць ідэя, песня цi прапанова, запоўніце\nформу.\nДзякуй!</string>
+    <string name="help_project_fill_the_form">Дапамагчы праекту, запоўніць форму</string>
 </resources>
