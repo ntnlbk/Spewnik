@@ -12,6 +12,7 @@ import com.LibBib.spevn.domain.Song
 import com.LibBib.spevn.domain.TransposeSongUseCase
 import com.LibBib.spevn.domain.options.GetOptionsUseCase
 import com.LibBib.spevn.domain.options.Options
+import com.LibBib.spevn.domain.remoteDB.DownloadSongUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -25,6 +26,7 @@ class SongViewModel @AssistedInject constructor(
     private val getSongUseCase: GetSongUseCase,
     private val getOptionsUseCase: GetOptionsUseCase,
     private val transposeSongUseCase: TransposeSongUseCase,
+    private val downloadSongUseCase: DownloadSongUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<SongFragmentState>(SongFragmentState.Progress)
@@ -35,7 +37,7 @@ class SongViewModel @AssistedInject constructor(
 
     fun updateScreen() {
         viewModelScope.launch {
-            song = getSongUseCase.invoke(songId).first()
+            song = getSongUseCase(songId).first()
             options = getOptionsUseCase()
             parseSong(song)
         }
@@ -87,6 +89,22 @@ class SongViewModel @AssistedInject constructor(
     private fun formatChordLine(line: String) = line.filterNot { it == CHORD_LINE_BEGIN } + NEW_LINE_CHAR
 
     private fun isChordLine(line: String) = line.isNotEmpty() && line[0] == CHORD_LINE_BEGIN
+
+    fun listenButtonClicked(){
+        _state.value = SongFragmentState.Progress
+        loadSongFromFirebase()
+    }
+
+    private fun loadSongFromFirebase(){
+        viewModelScope.launch {
+            downloadSongUseCase(song.name).collect { result ->
+                _state.value = result.fold(
+                    onSuccess = { SongFragmentState.SongFileDownloadSuccessful(it)},
+                    onFailure = { SongFragmentState.SongFileDownloadError(it.message ?: "Unknown message")}
+                )
+            }
+        }
+    }
 
     companion object {
 

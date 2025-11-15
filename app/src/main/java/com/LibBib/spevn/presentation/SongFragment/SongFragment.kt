@@ -1,21 +1,26 @@
 package com.LibBib.spevn.presentation.SongFragment
 
+import android.net.Uri
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.LibBib.spevn.di.SpewnikApplication
-import com.LibBib.spevn.presentation.OptionsFragment.OptionsFragment
 import com.LibBib.spevn.R
 import com.LibBib.spevn.databinding.FragmentSongBinding
+import com.LibBib.spevn.di.SpewnikApplication
+import com.LibBib.spevn.presentation.OptionsFragment.OptionsFragment
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 
@@ -24,10 +29,10 @@ class SongFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: SongViewModel.Factory
 
+
     private val viewModel by lazy {
         ViewModelProvider(
-            this,
-            SongViewModel.factory(viewModelFactory, songId!!)
+            this, SongViewModel.factory(viewModelFactory, songId!!)
         )[SongViewModel::class.java]
     }
     private val component by lazy {
@@ -44,6 +49,12 @@ class SongFragment : Fragment() {
 
     private var songId: Int? = null
 
+    private val player by lazy {
+        ExoPlayer.Builder(requireActivity()).build()
+    }
+
+    private var audioPlaying = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -58,7 +69,11 @@ class SongFragment : Fragment() {
         parseArgs()
         setupTextViews()
         observeViewModel()
+        setupClickListeners()
 
+    }
+
+    private fun setupClickListeners() {
         binding.backBtn.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
@@ -79,6 +94,16 @@ class SongFragment : Fragment() {
             }
         }
 
+        binding.buttonForTest.setOnClickListener {
+            if (player.isPlaying)
+                player.pause()
+            else {
+                if (audioPlaying)
+                    player.play()
+                else
+                    viewModel.listenButtonClicked()
+            }
+        }
     }
 
     private fun launchOptionsFragmentInPortraitMode() {
@@ -90,9 +115,7 @@ class SongFragment : Fragment() {
     private fun launchOptionsFragmentInLandscapeMode() {
         val fragment = OptionsFragment.newInstance()
         requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerViewSongText, fragment)
-            .addToBackStack("")
-            .commit()
+            .replace(R.id.fragmentContainerViewSongText, fragment).addToBackStack("").commit()
     }
 
     private fun observeViewModel() {
@@ -112,9 +135,28 @@ class SongFragment : Fragment() {
                     is SongFragmentState.Progress -> {
                         binding.songProgressBar.visibility = View.VISIBLE
                     }
+
+                    is SongFragmentState.SongFileDownloadError -> {
+                        Toast.makeText(requireActivity(), it.message, Toast.LENGTH_LONG)
+                        binding.songProgressBar.visibility = View.INVISIBLE
+                    }
+
+                    is SongFragmentState.SongFileDownloadSuccessful -> {
+                        play(it.file)
+                        binding.songProgressBar.visibility = View.INVISIBLE
+                    }
                 }
             }
         }
+    }
+
+
+    private fun play(file: File) {
+        val mediaItem = MediaItem.fromUri(Uri.fromFile(file))
+        player.setMediaItem(mediaItem)
+        player.prepare()
+        audioPlaying = true
+        player.play()
     }
 
     private fun setupTextViews() {

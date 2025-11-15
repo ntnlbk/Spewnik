@@ -48,6 +48,9 @@ dependencies {
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.firebase.storage)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.session)
     ksp(libs.dagger.compiler)
 
     //room
@@ -79,6 +82,9 @@ dependencies {
     implementation(libs.firebase.analytics)
     //firebase realtime database
     implementation(libs.firebase.database)
+
+    //exoplayer
+    implementation(libs.androidx.media3.exoplayer)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
