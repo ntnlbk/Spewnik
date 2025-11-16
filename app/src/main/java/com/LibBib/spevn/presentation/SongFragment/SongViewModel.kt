@@ -7,6 +7,7 @@ import android.text.style.ForegroundColorSpan
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.LibBib.spevn.R
 import com.LibBib.spevn.domain.GetSongUseCase
 import com.LibBib.spevn.domain.Song
 import com.LibBib.spevn.domain.TransposeSongUseCase
@@ -100,7 +101,7 @@ class SongViewModel @AssistedInject constructor(
             downloadSongUseCase(song.name).collect { result ->
                 _state.value = result.fold(
                     onSuccess = { SongFragmentState.SongFileDownloadSuccessful(it)},
-                    onFailure = { SongFragmentState.SongFileDownloadError(it.message ?: "Unknown message")}
+                    onFailure = { SongFragmentState.SongFileDownloadError(it.message)}
                 )
             }
         }

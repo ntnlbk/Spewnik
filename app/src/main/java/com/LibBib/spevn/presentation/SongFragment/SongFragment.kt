@@ -134,16 +134,24 @@ class SongFragment : Fragment() {
 
                     is SongFragmentState.Progress -> {
                         binding.songProgressBar.visibility = View.VISIBLE
+                        binding.buttonForTest.isClickable = false
                     }
 
                     is SongFragmentState.SongFileDownloadError -> {
-                        Toast.makeText(requireActivity(), it.message, Toast.LENGTH_LONG)
+
+                        Toast.makeText(requireActivity(),
+                            it.message
+                                ?: requireActivity().resources.getString(R.string.unknown_error_message),
+                            Toast.LENGTH_SHORT
+                        ).show()
                         binding.songProgressBar.visibility = View.INVISIBLE
+                        binding.buttonForTest.isClickable = true
                     }
 
                     is SongFragmentState.SongFileDownloadSuccessful -> {
                         play(it.file)
                         binding.songProgressBar.visibility = View.INVISIBLE
+                        binding.buttonForTest.isClickable = true
                     }
                 }
             }
@@ -181,6 +189,11 @@ class SongFragment : Fragment() {
     override fun onResume() {
         viewModel.updateScreen()
         super.onResume()
+    }
+
+    override fun onPause() {
+        player.stop()
+        super.onPause()
     }
 
     companion object {

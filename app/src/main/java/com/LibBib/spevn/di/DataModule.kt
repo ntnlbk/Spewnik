@@ -1,6 +1,7 @@
 package com.LibBib.spevn.di
 
 import android.app.Application
+import com.LibBib.spevn.data.NetworkCheckerImpl
 import com.LibBib.spevn.data.SongListDao
 import com.LibBib.spevn.data.SongListRepositoryImpl
 import com.LibBib.spevn.data.SongRoomDatabase
@@ -8,9 +9,11 @@ import com.LibBib.spevn.data.firebase.FirebaseRepository
 import com.LibBib.spevn.data.options.OptionsRepositoryImpl
 import com.LibBib.spevn.domain.SongListRepository
 import com.LibBib.spevn.domain.options.OptionsRepository
+import com.LibBib.spevn.domain.remoteDB.NetworkChecker
 import com.LibBib.spevn.domain.remoteDB.RemoteDatabaseRepository
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
 class DataModule {
@@ -33,6 +36,12 @@ class DataModule {
     @Provides
     fun provideSongListDao(application: Application): SongListDao {
         return SongRoomDatabase.getDatabase(application).songListDao()
+    }
+
+    @Provides
+    @ApplicationScope
+    fun provideNetworkChecker(impl: NetworkCheckerImpl): NetworkChecker{
+        return impl
     }
 
 }

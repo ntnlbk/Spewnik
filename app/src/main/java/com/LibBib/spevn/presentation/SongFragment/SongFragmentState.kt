@@ -14,6 +14,6 @@ sealed class SongFragmentState {
         val file: File
     ) : SongFragmentState()
     class SongFileDownloadError(
-        val message: String
+        val message: String?
     ) : SongFragmentState()
 }
