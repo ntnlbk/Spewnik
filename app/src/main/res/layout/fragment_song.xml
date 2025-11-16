@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="60dp"
         android:fontFamily="@font/myfont"
         android:gravity="center_horizontal|top"
 
@@ -86,8 +86,34 @@
         android:text="Button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="161dp"
         tools:layout_editor_absoluteY="793dp" />
+
+    <ImageView
+        android:id="@+id/song_listen_ic"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:contentDescription="@string/listen_button_icon"
+        app:srcCompat="@drawable/arrow_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="35dp"/>
+
+    <TextView
+        android:id="@+id/listen_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/listen_btn_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/song_listen_ic"
+        android:textStyle="bold"
+        android:layout_marginTop="-8dp"
+        android:textSize="17sp"
+        android:fontFamily="@font/myfont"
+        android:textColor="@color/C2"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
