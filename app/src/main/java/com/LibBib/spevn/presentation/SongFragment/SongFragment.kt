@@ -1,5 +1,6 @@
 package com.LibBib.spevn.presentation.SongFragment
 
+
 import android.net.Uri
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
@@ -19,6 +20,7 @@ import com.LibBib.spevn.R
 import com.LibBib.spevn.databinding.FragmentSongBinding
 import com.LibBib.spevn.di.SpewnikApplication
 import com.LibBib.spevn.presentation.OptionsFragment.OptionsFragment
+import com.LibBib.spevn.presentation.SongListenDialogFragment.SongListenDialogFragment
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -104,6 +106,14 @@ class SongFragment : Fragment() {
                     viewModel.listenButtonClicked()
             }
         }
+
+        binding.listenBtn.setOnClickListener {
+            showListenDialog()
+        }
+    }
+
+    private fun showListenDialog() {
+        SongListenDialogFragment().show(requireActivity().supportFragmentManager, SONG_LISTEN_DIALOG_TAG)
     }
 
     private fun launchOptionsFragmentInPortraitMode() {
@@ -212,5 +222,6 @@ class SongFragment : Fragment() {
         private const val LANDSCAPE_MODE = 100
         private const val PORTRAIT_MODE = 111
         private const val UNKNOWN_MODE = 0
+        private const val SONG_LISTEN_DIALOG_TAG = "song listen dialog"
     }
 }
