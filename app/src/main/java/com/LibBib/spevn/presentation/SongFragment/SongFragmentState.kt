@@ -11,7 +11,8 @@ sealed class SongFragmentState {
         val textSizeFromOptions: Int = 0
     ) : SongFragmentState()
     class SongFileDownloadSuccessful(
-        val file: File
+        val file: File,
+        val songName: String
     ) : SongFragmentState()
     class SongFileDownloadError(
         val message: String?

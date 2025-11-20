@@ -49,13 +49,13 @@ class MainActivity : AppCompatActivity() {
         val lastShownVersionCode = sharedPreferences.getInt(lastVersionKey, 0)
 
         if (BUILD_ACTUAL_VERSION > lastShownVersionCode) {
-         //Show the "What's New" dialog
+            //Show the "What's New" dialog
 
             WhatsNewDialogFragment().show(supportFragmentManager, WHATS_NEW_DIALOG_TAG)
 
-        // Update the last shown version in SharedPreferences
-        sharedPreferences.edit { putInt(lastVersionKey, BUILD_ACTUAL_VERSION) }
-          }
+            // Update the last shown version in SharedPreferences
+            sharedPreferences.edit { putInt(lastVersionKey, BUILD_ACTUAL_VERSION) }
+        }
     }
 
 

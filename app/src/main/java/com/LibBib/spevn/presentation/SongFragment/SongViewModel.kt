@@ -7,7 +7,6 @@ import android.text.style.ForegroundColorSpan
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.LibBib.spevn.R
 import com.LibBib.spevn.domain.GetSongUseCase
 import com.LibBib.spevn.domain.Song
 import com.LibBib.spevn.domain.TransposeSongUseCase
@@ -35,7 +34,9 @@ class SongViewModel @AssistedInject constructor(
 
     private lateinit var options: Options
     private lateinit var song: Song
-
+    private lateinit var songName: String
+    private lateinit var songText: String
+    private lateinit var spannableSongText: SpannableString
     fun updateScreen() {
         viewModelScope.launch {
             song = getSongUseCase(songId).first()
@@ -46,13 +47,15 @@ class SongViewModel @AssistedInject constructor(
 
     private fun parseSong(song: Song) {
         _state.value = SongFragmentState.Progress
-        val songName = song.name
-        val songText = song.text
+        songName = song.name
+        songText = song.text
+        spannableSongText = SpannableString(parseSongText(songText))
+        setContentState()
 
-        val spannableSongText = SpannableString(parseSongText(songText))
+    }
+
+    private fun setContentState() {
         _state.value = SongFragmentState.Content(songName, spannableSongText, options.textSize)
-
-
     }
 
     private fun parseSongText(songText: String): SpannableStringBuilder {
@@ -100,12 +103,13 @@ class SongViewModel @AssistedInject constructor(
         viewModelScope.launch {
             downloadSongUseCase(song.name).collect { result ->
                 _state.value = result.fold(
-                    onSuccess = { SongFragmentState.SongFileDownloadSuccessful(it)},
+                    onSuccess = { SongFragmentState.SongFileDownloadSuccessful(it, songName)},
                     onFailure = { SongFragmentState.SongFileDownloadError(it.message)}
                 )
             }
         }
     }
+
 
     companion object {
 

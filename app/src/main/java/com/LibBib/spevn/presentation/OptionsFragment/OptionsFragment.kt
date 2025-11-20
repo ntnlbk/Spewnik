@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.LibBib.spevn.di.SpewnikApplication
 import com.LibBib.spevn.di.ViewModelFactory
 import com.LibBib.spevn.domain.options.Options
@@ -36,8 +38,6 @@ class OptionsFragment : Fragment() {
     private val binding: FragmentOptionsBinding
         get() = _binding ?: throw Exception("FragmentOptionsBinding is null")
 
-    private var actualIsDarkMode: Boolean = true
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         component.inject(this)
@@ -60,16 +60,18 @@ class OptionsFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        lifecycleScope.launch {
-            viewModel.state.collect {
-                when (it) {
-                    is OptionsFragmentState.Progress -> {
-                        binding.optionsProgressBar.visibility = View.VISIBLE
-                    }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.state.collect {
+                    when (it) {
+                        is OptionsFragmentState.Progress -> {
+                            binding.optionsProgressBar.visibility = View.VISIBLE
+                        }
 
-                    is OptionsFragmentState.Content -> {
-                        updateViewsWithContent(it.options)
-                        binding.optionsProgressBar.visibility = View.INVISIBLE
+                        is OptionsFragmentState.Content -> {
+                            updateViewsWithContent(it.options)
+                            binding.optionsProgressBar.visibility = View.INVISIBLE
+                        }
                     }
                 }
             }

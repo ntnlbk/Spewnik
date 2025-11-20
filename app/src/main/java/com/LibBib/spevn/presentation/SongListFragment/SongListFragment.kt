@@ -29,6 +29,8 @@ import com.LibBib.spevn.databinding.FragmentSongListBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.core.net.toUri
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.LibBib.spevn.presentation.MainActivity.Companion.INSTAGRAM_URL
 import com.LibBib.spevn.presentation.MainActivity.Companion.TELEGRAM_URL
 
@@ -157,7 +159,7 @@ class SongListFragment : Fragment() {
         }
     }
 
-    private fun launchHelpUsFragment(){
+    private fun launchHelpUsFragment() {
         findNavController().navigate(
             SongListFragmentDirections.actionSongListFragmentToHelpUsFragment()
         )
@@ -183,20 +185,23 @@ class SongListFragment : Fragment() {
 
 
     private fun observeViewModel() {
-        lifecycleScope.launch {
-            viewModel.state.collect {
-                when (it) {
-                    is SongListFragmentState.Content -> {
-                        adapter.submitList(it.songList)
-                        binding.listProgressBar.visibility = View.INVISIBLE
-                        colorTypeTextViews(it.currentSongType)
-                    }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect {
+                    when (it) {
+                        is SongListFragmentState.Content -> {
+                            adapter.submitList(it.songList)
+                            binding.listProgressBar.visibility = View.INVISIBLE
+                            colorTypeTextViews(it.currentSongType)
+                        }
 
-                    is SongListFragmentState.Progress -> {
-                        binding.listProgressBar.visibility = View.VISIBLE
+                        is SongListFragmentState.Progress -> {
+                            binding.listProgressBar.visibility = View.VISIBLE
+                        }
                     }
                 }
             }
+
         }
     }
 

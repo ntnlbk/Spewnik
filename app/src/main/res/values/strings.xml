@@ -53,4 +53,6 @@
     <string name="check_internet_connection">Праверце інтэрнэт падключэнне</string>
     <string name="listen_button_icon">Listen button icon</string>
     <string name="listen_btn_text">паслухаць</string>
+    <string name="close_dialog_button">close dialog button</string>
+    <string name="play_button_content_description">play button</string>
 </resources>

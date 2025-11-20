@@ -1,7 +1,6 @@
 package com.LibBib.spevn.presentation.SongFragment
 
 
-import android.net.Uri
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.TypedValue
@@ -10,9 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.media3.common.MediaItem
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -22,7 +22,6 @@ import com.LibBib.spevn.di.SpewnikApplication
 import com.LibBib.spevn.presentation.OptionsFragment.OptionsFragment
 import com.LibBib.spevn.presentation.SongListenDialogFragment.SongListenDialogFragment
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 
 
@@ -55,7 +54,6 @@ class SongFragment : Fragment() {
         ExoPlayer.Builder(requireActivity()).build()
     }
 
-    private var audioPlaying = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -95,25 +93,19 @@ class SongFragment : Fragment() {
                 }
             }
         }
-
-        binding.buttonForTest.setOnClickListener {
-            if (player.isPlaying)
-                player.pause()
-            else {
-                if (audioPlaying)
-                    player.play()
-                else
-                    viewModel.listenButtonClicked()
+        if (MODE == PORTRAIT_MODE)
+            binding.listenBtn.setOnClickListener {
+                viewModel.listenButtonClicked()
             }
-        }
-
-        binding.listenBtn.setOnClickListener {
-            showListenDialog()
-        }
     }
 
-    private fun showListenDialog() {
-        SongListenDialogFragment().show(requireActivity().supportFragmentManager, SONG_LISTEN_DIALOG_TAG)
+    private fun showListenDialog(
+        songName: String,
+        filePath: String,
+    ) {
+        val dialog = SongListenDialogFragment
+            .newInstance(songName, filePath)
+        dialog.show(requireActivity().supportFragmentManager, SONG_LISTEN_DIALOG_TAG)
     }
 
     private fun launchOptionsFragmentInPortraitMode() {
@@ -129,53 +121,50 @@ class SongFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        lifecycleScope.launch {
-            viewModel.state.collect {
-                when (it) {
-                    is SongFragmentState.Content -> {
-                        binding.songNameTv.text = it.name
-                        binding.songTextTv.text = it.text
-                        binding.songTextTv.setTextSize(
-                            TypedValue.COMPLEX_UNIT_SP,
-                            TEXT_VIEW_DEFAULT_TEXT_SIZE + it.textSizeFromOptions.toFloat()
-                        )
-                        binding.songProgressBar.visibility = View.INVISIBLE
-                    }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect {
+                    when (it) {
+                        is SongFragmentState.Content -> {
+                            binding.songNameTv.text = it.name
+                            binding.songTextTv.text = it.text
+                            binding.songTextTv.setTextSize(
+                                TypedValue.COMPLEX_UNIT_SP,
+                                TEXT_VIEW_DEFAULT_TEXT_SIZE + it.textSizeFromOptions.toFloat()
+                            )
+                            binding.songProgressBar.visibility = View.INVISIBLE
+                            binding.listenBtn.isClickable = true
+                        }
 
-                    is SongFragmentState.Progress -> {
-                        binding.songProgressBar.visibility = View.VISIBLE
-                        binding.buttonForTest.isClickable = false
-                    }
+                        is SongFragmentState.Progress -> {
+                            binding.songProgressBar.visibility = View.VISIBLE
+                            binding.listenBtn.isClickable = false
+                        }
 
-                    is SongFragmentState.SongFileDownloadError -> {
+                        is SongFragmentState.SongFileDownloadError -> {
 
-                        Toast.makeText(requireActivity(),
-                            it.message
-                                ?: requireActivity().resources.getString(R.string.unknown_error_message),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        binding.songProgressBar.visibility = View.INVISIBLE
-                        binding.buttonForTest.isClickable = true
-                    }
+                            Toast.makeText(
+                                requireActivity(),
+                                it.message
+                                    ?: requireActivity().resources.getString(R.string.unknown_error_message),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            binding.songProgressBar.visibility = View.INVISIBLE
+                            binding.listenBtn.isClickable = true
+                        }
 
-                    is SongFragmentState.SongFileDownloadSuccessful -> {
-                        play(it.file)
-                        binding.songProgressBar.visibility = View.INVISIBLE
-                        binding.buttonForTest.isClickable = true
+                        is SongFragmentState.SongFileDownloadSuccessful -> {
+                            showListenDialog(it.songName, it.file.path)
+                            binding.songProgressBar.visibility = View.INVISIBLE
+                            binding.listenBtn.isClickable = true
+                        }
                     }
                 }
             }
+
         }
     }
 
-
-    private fun play(file: File) {
-        val mediaItem = MediaItem.fromUri(Uri.fromFile(file))
-        player.setMediaItem(mediaItem)
-        player.prepare()
-        audioPlaying = true
-        player.play()
-    }
 
     private fun setupTextViews() {
         binding.songTextTv.movementMethod = ScrollingMovementMethod()
