@@ -1,6 +1,7 @@
 package com.LibBib.spevn.presentation.SongFragment
 
 
+import android.net.Uri
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.TypedValue
@@ -13,15 +14,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.media3.exoplayer.ExoPlayer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.LibBib.spevn.R
 import com.LibBib.spevn.databinding.FragmentSongBinding
 import com.LibBib.spevn.di.SpewnikApplication
 import com.LibBib.spevn.presentation.OptionsFragment.OptionsFragment
+import com.LibBib.spevn.presentation.SongListenDialogFragment.ListenDialogCallback
 import com.LibBib.spevn.presentation.SongListenDialogFragment.SongListenDialogFragment
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 
@@ -49,10 +51,6 @@ class SongFragment : Fragment() {
         get() = _binding ?: throw Exception("SongFragmentBinding is null")
 
     private var songId: Int? = null
-
-    private val player by lazy {
-        ExoPlayer.Builder(requireActivity()).build()
-    }
 
 
     override fun onCreateView(
@@ -99,13 +97,31 @@ class SongFragment : Fragment() {
             }
     }
 
-    private fun showListenDialog(
-        songName: String,
-        filePath: String,
-    ) {
+    private fun showListenDialog() {
+
         val dialog = SongListenDialogFragment
-            .newInstance(songName, filePath)
+            .newInstance()
+        dialog.playerState = viewModel.playerState
+        dialog.callback = object : ListenDialogCallback {
+            override fun onPlayClicked() {
+                viewModel.playButtonClicked()
+            }
+
+            override fun onPauseClicked() {
+                viewModel.pauseButtonClicked()
+            }
+
+            override fun onSeekTo(position: Long) {
+
+            }
+
+            override fun onDismissed() {
+            }
+
+        }
         dialog.show(requireActivity().supportFragmentManager, SONG_LISTEN_DIALOG_TAG)
+
+
     }
 
     private fun launchOptionsFragmentInPortraitMode() {
@@ -154,7 +170,7 @@ class SongFragment : Fragment() {
                         }
 
                         is SongFragmentState.SongFileDownloadSuccessful -> {
-                            showListenDialog(it.songName, it.file.path)
+                            showListenDialog()
                             binding.songProgressBar.visibility = View.INVISIBLE
                             binding.listenBtn.isClickable = true
                         }
@@ -188,11 +204,6 @@ class SongFragment : Fragment() {
     override fun onResume() {
         viewModel.updateScreen()
         super.onResume()
-    }
-
-    override fun onPause() {
-        player.stop()
-        super.onPause()
     }
 
     companion object {

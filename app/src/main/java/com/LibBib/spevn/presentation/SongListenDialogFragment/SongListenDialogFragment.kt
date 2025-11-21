@@ -1,45 +1,82 @@
 package com.LibBib.spevn.presentation.SongListenDialogFragment
 
-import android.annotation.SuppressLint
-import android.media.MediaMetadataRetriever
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.LibBib.spevn.R
-import java.util.concurrent.TimeUnit
+import com.LibBib.spevn.databinding.SongListenDialogBinding
+import com.LibBib.spevn.presentation.SongFragment.PlayerUIState
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class SongListenDialogFragment : DialogFragment() {
+
+
+    var callback: ListenDialogCallback? = null
+    var playerState: StateFlow<PlayerUIState>? = null
+    private var _binding: SongListenDialogBinding? = null
+    private val binding: SongListenDialogBinding
+        get() = _binding ?: throw Exception("SongListenDialogBinding is null")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, 0)
     }
 
-    private val songName by lazy {
-        requireArguments().getString(SONG_NAME_ARGUMENT_KEY)
-    }
-
-    private val fileToPlayPath by lazy {
-        requireArguments().getString(FILE_TO_PLAY_PATH_ARGUMENT)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val view = inflater.inflate(R.layout.song_listen_dialog, container, false)
-        view.findViewById<ImageView>(R.id.close_dialog_btn).setOnClickListener {
+        _binding = SongListenDialogBinding.inflate(inflater)
+        setupOnClickListeners()
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        playerState?.let { it ->
+            viewLifecycleOwner.lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    it.collect {
+                        updateUI(it)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateUI(state: PlayerUIState) {
+        if (state.isPlaying) {
+            binding.playBtn.setImageResource(R.drawable.pause_icon)
+            binding.playBtn.setOnClickListener {
+                callback?.onPauseClicked()
+            }
+        } else {
+            binding.playBtn.setImageResource(R.drawable.play_button_icon)
+            binding.playBtn.setOnClickListener {
+                callback?.onPlayClicked()
+            }
+        }
+        binding.songNameDialogTv.text = state.songName
+        val posSec = (state.currentPosition / 1000).toInt()
+        val durSec = (state.duration / 1000).toInt()
+        binding.songTimeTv.text = formatTime(durSec)
+        binding.actualTimeTv.text = formatTime(posSec)
+    }
+
+    private fun setupOnClickListeners() {
+        binding.closeDialogBtn.setOnClickListener {
             dialog?.dismiss()
         }
-        view.findViewById<TextView>(R.id.song_name_dialog_tv).text = songName
-        view.findViewById<TextView>(R.id.song_time_tv).text = getAudioDuration(fileToPlayPath)
-        return view
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -53,59 +90,32 @@ class SongListenDialogFragment : DialogFragment() {
         }
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        callback?.onDismissed()
+    }
+
     override fun onDestroyView() {
+        _binding = null
         super.onDestroyView()
     }
 
-    @SuppressLint("DefaultLocale")
-    private fun getAudioDuration(filePath: String?): String {
-        val retriever = MediaMetadataRetriever()
-        retriever.setDataSource(filePath)
-
-        val durationStr =
-            retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-
-        val durationMs = durationStr?.toLongOrNull() ?: 0L
-
-        retriever.release()
-
-        val minutes = TimeUnit.MILLISECONDS.toMinutes(durationMs)
-        val seconds = TimeUnit.MILLISECONDS.toSeconds(durationMs) % 60
-
-        return String.format("%02d:%02d", minutes, seconds)
+    private fun formatTime(seconds: Int): String {
+        val m = seconds / 60
+        val s = seconds % 60
+        return "%02d:%02d".format(m, s)
     }
 
     companion object {
-        fun newInstance(songName: String,
-                        fileToPlayPath: String
-        ): SongListenDialogFragment {
-            return SongListenDialogFragment().apply {
-                arguments = Bundle().apply{
-                    putString(SONG_NAME_ARGUMENT_KEY, songName)
-                    putString(FILE_TO_PLAY_PATH_ARGUMENT, fileToPlayPath)
-                }
-            }
+        fun newInstance(): SongListenDialogFragment {
+            return SongListenDialogFragment()
         }
-        private const val SONG_NAME_ARGUMENT_KEY = "song name"
-        private const val FILE_TO_PLAY_PATH_ARGUMENT = "file to play path"
     }
 }
 
-
-//private fun play(file: File) {
-//    val mediaItem = MediaItem.fromUri(Uri.fromFile(file))
-//    player.setMediaItem(mediaItem)
-//    player.prepare()
-//    audioPlaying = true
-//    player.play()
-//}
-//binding.buttonForTest.setOnClickListener {
-//    if (player.isPlaying)
-//        player.pause()
-//    else {
-//        if (audioPlaying)
-//            player.play()
-//        else
-//            viewModel.listenButtonClicked()
-//    }
-//}
+interface ListenDialogCallback {
+    fun onPlayClicked()
+    fun onPauseClicked()
+    fun onSeekTo(position: Long)
+    fun onDismissed()
+}

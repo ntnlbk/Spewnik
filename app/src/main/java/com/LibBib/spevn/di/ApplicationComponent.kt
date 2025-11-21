@@ -5,6 +5,7 @@ import com.LibBib.spevn.presentation.MainActivity
 import com.LibBib.spevn.presentation.OptionsFragment.OptionsFragment
 import com.LibBib.spevn.presentation.SongFragment.SongFragment
 import com.LibBib.spevn.presentation.SongListFragment.SongListFragment
+import com.LibBib.spevn.presentation.SongListenDialogFragment.SongListenDialogFragment
 import dagger.BindsInstance
 import dagger.Component
 
@@ -19,6 +20,7 @@ interface ApplicationComponent {
     fun inject(optionsFragment: OptionsFragment)
 
     fun inject(mainActivity: MainActivity)
+
 
     @Component.Factory
     interface ApplicationComponentFactory{

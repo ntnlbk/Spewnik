@@ -1,5 +1,6 @@
 package com.LibBib.spevn.presentation.SongFragment
 
+import android.app.Application
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -7,6 +8,8 @@ import android.text.style.ForegroundColorSpan
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
 import com.LibBib.spevn.domain.GetSongUseCase
 import com.LibBib.spevn.domain.Song
 import com.LibBib.spevn.domain.TransposeSongUseCase
@@ -16,6 +19,7 @@ import com.LibBib.spevn.domain.remoteDB.DownloadSongUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
@@ -26,7 +30,8 @@ class SongViewModel @AssistedInject constructor(
     private val getSongUseCase: GetSongUseCase,
     private val getOptionsUseCase: GetOptionsUseCase,
     private val transposeSongUseCase: TransposeSongUseCase,
-    private val downloadSongUseCase: DownloadSongUseCase
+    private val downloadSongUseCase: DownloadSongUseCase,
+    private val application: Application
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<SongFragmentState>(SongFragmentState.Progress)
@@ -37,6 +42,35 @@ class SongViewModel @AssistedInject constructor(
     private lateinit var songName: String
     private lateinit var songText: String
     private lateinit var spannableSongText: SpannableString
+
+    private val player by lazy {
+        ExoPlayer.Builder(application).build()
+    }
+
+    private val _playerState = MutableStateFlow(PlayerUIState())
+    val playerState = _playerState
+
+    init {
+        viewModelScope.launch {
+            while (true) {
+                delay(200L)
+                _playerState.value = PlayerUIState(
+                    currentPosition = player.currentPosition,
+                    duration = player.duration.takeIf { it > 0 } ?: 0L,
+                    isPlaying = player.isPlaying,
+                    songName = songName
+                )
+            }
+        }
+    }
+
+    fun playButtonClicked(){
+        player.play()
+    }
+    fun pauseButtonClicked(){
+        player.pause()
+    }
+
     fun updateScreen() {
         viewModelScope.launch {
             song = getSongUseCase(songId).first()
@@ -103,7 +137,14 @@ class SongViewModel @AssistedInject constructor(
         viewModelScope.launch {
             downloadSongUseCase(song.name).collect { result ->
                 _state.value = result.fold(
-                    onSuccess = { SongFragmentState.SongFileDownloadSuccessful(it, songName)},
+                    onSuccess = {
+                        if (player.currentMediaItem == null){
+                            val mediaItem = MediaItem.fromUri(it.path)
+                            player.setMediaItem(mediaItem)
+                            player.prepare()
+                        }
+                        SongFragmentState.SongFileDownloadSuccessful()
+                        },
                     onFailure = { SongFragmentState.SongFileDownloadError(it.message)}
                 )
             }

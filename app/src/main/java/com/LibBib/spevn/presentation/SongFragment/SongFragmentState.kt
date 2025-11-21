@@ -1,7 +1,6 @@
 package com.LibBib.spevn.presentation.SongFragment
 
 import android.text.SpannableString
-import java.io.File
 
 sealed class SongFragmentState {
     data object Progress : SongFragmentState()
@@ -10,10 +9,7 @@ sealed class SongFragmentState {
         val text: SpannableString,
         val textSizeFromOptions: Int = 0
     ) : SongFragmentState()
-    class SongFileDownloadSuccessful(
-        val file: File,
-        val songName: String
-    ) : SongFragmentState()
+    class SongFileDownloadSuccessful() : SongFragmentState()
     class SongFileDownloadError(
         val message: String?
     ) : SongFragmentState()
