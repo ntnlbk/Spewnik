@@ -104,6 +104,7 @@ class MainActivity : AppCompatActivity() {
         private const val BUILD_ACTUAL_VERSION = 17
         private const val WHATS_NEW_DIALOG_TAG = "WhatsNewDialog"
         const val TELEGRAM_URL = "https://t.me/spewnikchat_bot"
+        const val SPEVY_TELEGRAM_URL = "https://t.me/spevy"
         const val INSTAGRAM_URL = "https://www.instagram.com/spewnik/"
         const val GOOGLE_PLAY_APP = "https://play.google.com/store/apps/details?id=com.LibBib.spevn"
         const val GOOGLE_PLAY_APP_URL = "market://details?id=com.LibBib.spevn"

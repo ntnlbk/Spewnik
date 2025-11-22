@@ -38,7 +38,9 @@
 
         <SeekBar
             android:id="@+id/song_seekbar"
-            android:layout_width="280dp"
+            android:layout_width="match_parent"
+            android:paddingStart="81dp"
+            android:paddingEnd="81dp"
             android:layout_height="25dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="14dp"

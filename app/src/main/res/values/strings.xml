@@ -31,9 +31,9 @@
     <string name="accept">Прыняць</string>
     <string name="open_menu">OPEN MENU</string>
     <string name="app_name_menu">Спеўнік</string>
-    <string name="update_whats_new">Абнаўленне! Спеўнік у Telegram!</string>
+    <string name="update_whats_new">Абнаўленне!</string>
     <string name="whats_new_first_block">Спеўнік цяпер будзе даступны для ўсіх у тэлеграме. Мы запускаем SpewnikBot - бота, які мае ўсе песні і функцыі з Спеўніка і дадаткова AI асыстэнта, які дапаможа выбраць песні, пракласці іх на давольную мову і шмат чаго іншага.</string>
-    <string name="whats_new_second_block">Спрабаваць Спеўнік у Telegram</string>
+    <string name="whats_new_second_block">Тэлеграм канал spevy</string>
     <string name="new_songs_were_added">Дададзены новыя песні, выпраўлены абдрукоўкі.</string>
     <string name="new_possibility_sup">Дададзена магчымасць падтрымаць праект (гл. \"Дапамога праекту\")</string>
     <string name="help_btn_string">Дапамагчы Спеўніку</string>
@@ -55,4 +55,5 @@
     <string name="listen_btn_text">паслухаць</string>
     <string name="close_dialog_button">close dialog button</string>
     <string name="play_button_content_description">play button</string>
+    <string name="new_listen_function">У супрацоўніцтве з тэлеграм каналам @spevy у Спеўнік з\'явілася функцыя праслухоўвання!</string>
 </resources>

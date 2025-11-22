@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.LibBib.spevn.R
 import com.LibBib.spevn.presentation.MainActivity.Companion.INSTAGRAM_URL
+import com.LibBib.spevn.presentation.MainActivity.Companion.SPEVY_TELEGRAM_URL
 import com.LibBib.spevn.presentation.MainActivity.Companion.TELEGRAM_URL
 
 class WhatsNewDialogFragment(
@@ -34,6 +35,8 @@ class WhatsNewDialogFragment(
         }
         val spanStringGoToTelegram =
             SpannableString(getString(R.string.whats_new_second_block))
+        val spanStringGoToTelegramBot =
+            SpannableString(getString(R.string.telegram_btn_text))
         val spanStringGoToInstagram =
             SpannableString(getString(R.string.go_to_instagram_tv))
 
@@ -43,6 +46,18 @@ class WhatsNewDialogFragment(
             UnderlineSpan(),
             0,
             spanStringGoToTelegram.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spanStringGoToTelegramBot.setSpan(
+            UnderlineSpan(),
+            0,
+            spanStringGoToTelegramBot.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spanStringGoToTelegramBot.setSpan(
+            ForegroundColorSpan(underlineColor),
+            0,
+            spanStringGoToTelegramBot.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
 
@@ -72,12 +87,22 @@ class WhatsNewDialogFragment(
             setOnClickListener {
                 val intent = Intent(
                     Intent.ACTION_VIEW,
-                    TELEGRAM_URL.toUri()
+                    SPEVY_TELEGRAM_URL.toUri()
                 )
                 startActivity(intent)
             }
         }
 
+        with(view.findViewById<TextView>(R.id.go_to_telegram_bot_tv)){
+            setText(spanStringGoToTelegramBot, TextView.BufferType.SPANNABLE)
+            setOnClickListener {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    TELEGRAM_URL.toUri()
+                )
+                startActivity(intent)
+            }
+        }
         with(view.findViewById<TextView>(R.id.go_to_instagram_tv)) {
             setText(spanStringGoToInstagram, TextView.BufferType.SPANNABLE)
             setOnClickListener {
