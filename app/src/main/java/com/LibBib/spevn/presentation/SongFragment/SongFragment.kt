@@ -89,10 +89,10 @@ class SongFragment : Fragment() {
                 }
             }
         }
-        if (MODE == PORTRAIT_MODE)
-            binding.listenBtn.setOnClickListener {
-                viewModel.listenButtonClicked()
-            }
+
+        binding.listenBtn.setOnClickListener {
+            viewModel.listenButtonClicked()
+        }
     }
 
     private fun showListenDialog() {

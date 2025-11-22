@@ -46,7 +46,8 @@
             android:progressBackgroundTint="@color/C18"
             android:progressBackgroundTintMode="add"
             android:progressTint="@color/C17"
-            android:thumb="@drawable/eclipse" />
+            android:thumb="@drawable/seek_bar_thumb_resize"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
