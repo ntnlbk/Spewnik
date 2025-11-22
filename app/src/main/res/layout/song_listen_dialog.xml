@@ -42,7 +42,7 @@
             android:layout_height="25dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="14dp"
-            android:progress="50"
+            android:max="100"
             android:progressBackgroundTint="@color/C18"
             android:progressBackgroundTintMode="add"
             android:progressTint="@color/C17"

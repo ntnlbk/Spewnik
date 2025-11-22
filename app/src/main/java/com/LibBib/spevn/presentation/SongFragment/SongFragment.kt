@@ -109,12 +109,8 @@ class SongFragment : Fragment() {
             }
 
             override fun onSeekTo(position: Long) {
-
+                viewModel.seekTo(position)
             }
-
-            override fun onDismissed() {
-            }
-
         }
         dialog.show(childFragmentManager, SONG_LISTEN_DIALOG_TAG)
 

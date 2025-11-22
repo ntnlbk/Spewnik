@@ -6,6 +6,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -72,6 +73,27 @@ class SongListenDialogFragment : DialogFragment() {
         val durSec = (state.duration / 1000).toInt()
         binding.songTimeTv.text = formatTime(durSec)
         binding.actualTimeTv.text = formatTime(posSec)
+
+        binding.songSeekbar.max = state.duration.toInt()
+        binding.songSeekbar.progress = state.currentPosition.toInt()
+
+        binding.songSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(
+                p0: SeekBar?,
+                p1: Int,
+                p2: Boolean,
+            ) {
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+                callback?.onSeekTo(binding.songSeekbar.progress.toLong())
+            }
+
+        })
+
     }
 
     private fun setupOnClickListeners() {
@@ -95,7 +117,6 @@ class SongListenDialogFragment : DialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        callback?.onDismissed()
     }
 
     override fun onDestroyView() {
@@ -121,5 +142,4 @@ interface ListenDialogCallback {
     fun onPlayClicked()
     fun onPauseClicked()
     fun onSeekTo(position: Long)
-    fun onDismissed()
 }

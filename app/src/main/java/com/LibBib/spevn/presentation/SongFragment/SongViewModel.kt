@@ -82,6 +82,10 @@ class SongViewModel @AssistedInject constructor(
         player.pause()
     }
 
+    fun seekTo(progress: Long){
+        player.seekTo(progress)
+    }
+
     fun updateScreen() {
         viewModelScope.launch {
             song = getSongUseCase(songId).first()
