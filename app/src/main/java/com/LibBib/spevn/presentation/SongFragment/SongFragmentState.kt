@@ -9,8 +9,5 @@ sealed class SongFragmentState {
         val text: SpannableString,
         val textSizeFromOptions: Int = 0
     ) : SongFragmentState()
-    class SongFileDownloadSuccessful() : SongFragmentState()
-    class SongFileDownloadError(
-        val message: String?
-    ) : SongFragmentState()
+
 }

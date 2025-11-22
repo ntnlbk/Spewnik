@@ -1,7 +1,6 @@
 package com.LibBib.spevn.presentation.SongFragment
 
 
-import android.net.Uri
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.TypedValue
@@ -23,7 +22,6 @@ import com.LibBib.spevn.presentation.OptionsFragment.OptionsFragment
 import com.LibBib.spevn.presentation.SongListenDialogFragment.ListenDialogCallback
 import com.LibBib.spevn.presentation.SongListenDialogFragment.SongListenDialogFragment
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 
 
@@ -101,7 +99,7 @@ class SongFragment : Fragment() {
 
         val dialog = SongListenDialogFragment
             .newInstance()
-        dialog.playerState = viewModel.playerState
+        dialog.playerState = viewModel.playerUIState
         dialog.callback = object : ListenDialogCallback {
             override fun onPlayClicked() {
                 viewModel.playButtonClicked()
@@ -157,8 +155,16 @@ class SongFragment : Fragment() {
                             binding.listenBtn.isClickable = false
                         }
 
-                        is SongFragmentState.SongFileDownloadError -> {
 
+                    }
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.songPlayerEvent.collect {
+                    when (it) {
+                        is SongPlayerEvent.SongFileDownloadError -> {
                             Toast.makeText(
                                 requireActivity(),
                                 it.message
@@ -169,7 +175,7 @@ class SongFragment : Fragment() {
                             binding.listenBtn.isClickable = true
                         }
 
-                        is SongFragmentState.SongFileDownloadSuccessful -> {
+                        is SongPlayerEvent.SongFileDownloadSuccessful -> {
                             showListenDialog()
                             binding.songProgressBar.visibility = View.INVISIBLE
                             binding.listenBtn.isClickable = true

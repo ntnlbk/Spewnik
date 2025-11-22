@@ -20,7 +20,9 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -31,7 +33,7 @@ class SongViewModel @AssistedInject constructor(
     private val getOptionsUseCase: GetOptionsUseCase,
     private val transposeSongUseCase: TransposeSongUseCase,
     private val downloadSongUseCase: DownloadSongUseCase,
-    private val application: Application
+    private val application: Application,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<SongFragmentState>(SongFragmentState.Progress)
@@ -47,14 +49,17 @@ class SongViewModel @AssistedInject constructor(
         ExoPlayer.Builder(application).build()
     }
 
-    private val _playerState = MutableStateFlow(PlayerUIState())
-    val playerState = _playerState
+    private val _playerUIState = MutableStateFlow(PlayerUIState())
+    val playerUIState = _playerUIState.asStateFlow()
+
+    private val _songPlayerEvent = MutableSharedFlow<SongPlayerEvent>()
+    val songPlayerEvent = _songPlayerEvent.asSharedFlow()
 
     init {
         viewModelScope.launch {
             while (true) {
                 delay(200L)
-                _playerState.value = PlayerUIState(
+                _playerUIState.value = PlayerUIState(
                     currentPosition = player.currentPosition,
                     duration = player.duration.takeIf { it > 0 } ?: 0L,
                     isPlaying = player.isPlaying,
@@ -64,10 +69,11 @@ class SongViewModel @AssistedInject constructor(
         }
     }
 
-    fun playButtonClicked(){
+    fun playButtonClicked() {
         player.play()
     }
-    fun pauseButtonClicked(){
+
+    fun pauseButtonClicked() {
         player.pause()
     }
 
@@ -98,7 +104,7 @@ class SongViewModel @AssistedInject constructor(
         for (line in lines) {
             var spannableLine: SpannableString
             if (isChordLine(line)) {
-                if(options.isChordsVisible){
+                if (options.isChordsVisible) {
                     var chordLine = formatChordLine(line)
                     if (options.transposeInt != ZERO_TRANSPOSE)
                         chordLine = transposeSongUseCase(chordLine, options.transposeInt)
@@ -109,7 +115,7 @@ class SongViewModel @AssistedInject constructor(
                         chordLine.length - 1,
                         Spannable.SPAN_EXCLUSIVE_INCLUSIVE
                     )
-                } else{
+                } else {
                     spannableLine = SpannableString(EMPTY_STRING)
                 }
 
@@ -124,29 +130,33 @@ class SongViewModel @AssistedInject constructor(
 
     }
 
-    private fun formatChordLine(line: String) = line.filterNot { it == CHORD_LINE_BEGIN } + NEW_LINE_CHAR
+    private fun formatChordLine(line: String) =
+        line.filterNot { it == CHORD_LINE_BEGIN } + NEW_LINE_CHAR
 
     private fun isChordLine(line: String) = line.isNotEmpty() && line[0] == CHORD_LINE_BEGIN
 
-    fun listenButtonClicked(){
+    fun listenButtonClicked() {
         _state.value = SongFragmentState.Progress
         loadSongFromFirebase()
     }
 
-    private fun loadSongFromFirebase(){
+    private fun loadSongFromFirebase() {
         viewModelScope.launch {
             downloadSongUseCase(song.name).collect { result ->
-                _state.value = result.fold(
-                    onSuccess = {
-                        if (player.currentMediaItem == null){
-                            val mediaItem = MediaItem.fromUri(it.path)
-                            player.setMediaItem(mediaItem)
-                            player.prepare()
-                        }
-                        SongFragmentState.SongFileDownloadSuccessful()
+                _songPlayerEvent.emit(
+                    result.fold(
+                        onSuccess = {
+                            if (player.currentMediaItem == null) {
+                                val mediaItem = MediaItem.fromUri(it.path)
+                                player.setMediaItem(mediaItem)
+                                player.prepare()
+                            }
+                            SongPlayerEvent.SongFileDownloadSuccessful()
                         },
-                    onFailure = { SongFragmentState.SongFileDownloadError(it.message)}
+                        onFailure = { SongPlayerEvent.SongFileDownloadError(it.message) }
+                    )
                 )
+                setContentState()
             }
         }
     }
