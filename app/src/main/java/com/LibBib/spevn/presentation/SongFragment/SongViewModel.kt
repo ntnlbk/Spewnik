@@ -36,12 +36,17 @@ class SongViewModel @AssistedInject constructor(
     private val application: Application,
 ) : ViewModel() {
 
+    override fun onCleared() {
+        super.onCleared()
+        player.release()
+    }
+
     private val _state = MutableStateFlow<SongFragmentState>(SongFragmentState.Progress)
     val state = _state.asStateFlow()
 
     private lateinit var options: Options
     private lateinit var song: Song
-    private lateinit var songName: String
+    private var songName = ""
     private lateinit var songText: String
     private lateinit var spannableSongText: SpannableString
 

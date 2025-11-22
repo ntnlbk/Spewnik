@@ -99,7 +99,6 @@ class SongFragment : Fragment() {
 
         val dialog = SongListenDialogFragment
             .newInstance()
-        dialog.playerState = viewModel.playerUIState
         dialog.callback = object : ListenDialogCallback {
             override fun onPlayClicked() {
                 viewModel.playButtonClicked()
@@ -117,7 +116,7 @@ class SongFragment : Fragment() {
             }
 
         }
-        dialog.show(requireActivity().supportFragmentManager, SONG_LISTEN_DIALOG_TAG)
+        dialog.show(childFragmentManager, SONG_LISTEN_DIALOG_TAG)
 
 
     }

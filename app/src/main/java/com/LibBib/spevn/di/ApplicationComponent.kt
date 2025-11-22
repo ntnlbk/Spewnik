@@ -21,6 +21,7 @@ interface ApplicationComponent {
 
     fun inject(mainActivity: MainActivity)
 
+    fun inject(playerFragment: SongListenDialogFragment)
 
     @Component.Factory
     interface ApplicationComponentFactory{

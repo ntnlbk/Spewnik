@@ -8,22 +8,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.LibBib.spevn.R
 import com.LibBib.spevn.databinding.SongListenDialogBinding
 import com.LibBib.spevn.presentation.SongFragment.PlayerUIState
-import kotlinx.coroutines.flow.StateFlow
+import com.LibBib.spevn.presentation.SongFragment.SongViewModel
 import kotlinx.coroutines.launch
 
 class SongListenDialogFragment : DialogFragment() {
 
+    private val viewModel: SongViewModel by lazy {
+        ViewModelProvider(requireParentFragment())[SongViewModel::class.java]
+    }
+
 
     var callback: ListenDialogCallback? = null
-    var playerState: StateFlow<PlayerUIState>? = null
     private var _binding: SongListenDialogBinding? = null
     private val binding: SongListenDialogBinding
         get() = _binding ?: throw Exception("SongListenDialogBinding is null")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,12 +46,10 @@ class SongListenDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        playerState?.let { it ->
-            viewLifecycleOwner.lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    it.collect {
-                        updateUI(it)
-                    }
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.playerUIState.collect { it ->
+                    updateUI(it)
                 }
             }
         }
@@ -110,6 +113,7 @@ class SongListenDialogFragment : DialogFragment() {
         fun newInstance(): SongListenDialogFragment {
             return SongListenDialogFragment()
         }
+
     }
 }
 
