@@ -68,7 +68,7 @@ class SongListenDialogFragment : DialogFragment() {
                 callback?.onPlayClicked()
             }
         }
-        binding.songNameDialogTv.text = state.songName
+        binding.songNameDialogTv.text = getString(R.string.thanks_to_spevy)
         val posSec = (state.currentPosition / 1000).toInt()
         val durSec = (state.duration / 1000).toInt()
         binding.songTimeTv.text = formatTime(durSec)

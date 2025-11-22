@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val BUILD_ACTUAL_VERSION = 17
+        private const val BUILD_ACTUAL_VERSION = 18
         private const val WHATS_NEW_DIALOG_TAG = "WhatsNewDialog"
         const val TELEGRAM_URL = "https://t.me/spewnikchat_bot"
         const val SPEVY_TELEGRAM_URL = "https://t.me/spevy"
